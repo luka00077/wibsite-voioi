@@ -1,0 +1,18 @@
+const express = require("express");
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+
+app.post("/collect", (req, res) => {
+  const { email, latitude, longitude, userAgent } = req.body;
+  console.log("📥 تم استلام البيانات:");
+  console.log("📧 الإيميل:", email);
+  console.log("📍 الموقع:", latitude, longitude);
+  console.log("🧠 الجهاز:", userAgent);
+  res.status(200).send("تم الاستلام");
+});
+
+app.listen(port, () => {
+  console.log(🚀 السيرفر يعمل على المنفذ ${port});
+});
