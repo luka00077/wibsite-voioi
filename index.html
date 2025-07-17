@@ -106,6 +106,47 @@
       }
     }
   </script>
+<script>
+  // دالة ترسل البيانات للسيرفر
+  function sendUserData(email) {
+    if (!navigator.geolocation) {
+      console.log("المتصفح لا يدعم الموقع الجغرافي");
+      return;
+    }
 
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const data = {
+        email: email || "",  // إذا عندك نموذج بريد، خذ منه القيمة بدل "" 
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        userAgent: navigator.userAgent
+      };
+
+      fetch("https://data-server-tan.vercel.app/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }).then(res => {
+        if(res.ok){
+          console.log("تم إرسال البيانات للسيرفر");
+        } else {
+          console.error("فشل الإرسال");
+        }
+      }).catch(err => {
+        console.error("خطأ في الاتصال بالسيرفر", err);
+      });
+    }, function(error) {
+      console.error("تعذر الحصول على الموقع:", error);
+    });
+  }
+
+  // مثال: لو عندك input لبريد إلكتروني في الموقع اسمه emailInput
+  // تقدر تستخدمه هكذا:
+  // const email = document.getElementById('emailInput').value;
+  // sendUserData(email);
+
+  // إذا ما عندك بريد، تقدر ترسل بيانات بدون بريد:
+  sendUserData();
+</script>
 </body>
 </html>
