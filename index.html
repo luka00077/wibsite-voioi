@@ -3,158 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>منظومة تسجيل الدخول</title>
+  <title>منظومة تسجيل الدخول (FormSubmit)</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #2c3e50, #3498db);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      flex-direction: column;
-    }
-    form {
-      background: rgba(0, 0, 0, 0.4);
-      padding: 25px;
-      border-radius: 10px;
-      width: 320px;
-      text-align: center;
-    }
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: none;
-      font-size: 16px;
-    }
-    label {
-      font-size: 14px;
-      display: block;
-      margin-bottom: 10px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #1abc9c;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .message {
-      margin-top: 15px;
-      font-size: 14px;
-      min-height: 20px;
-    }
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      justify-content: start;
-      gap: 5px;
-      margin-bottom: 10px;
-      font-size: 13px;
-      text-align: right;
-    }
-    .google-button {
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: center;
-    }
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #2c3e50, #3498db); color: white;
+      display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; padding:20px; }
+    form { background: rgba(0,0,0,0.45); padding:22px; border-radius:10px; width:360px; box-sizing:border-box; text-align:center; }
+    input[type="text"], input[type="email"], textarea { width:100%; padding:10px; margin:8px 0; border-radius:6px; border:none; font-size:15px; box-sizing:border-box; }
+    button { width:100%; padding:10px; background:#1abc9c; border:none; border-radius:6px; color:white; font-size:16px; cursor:pointer; }
+    .message { margin-top:12px; font-size:14px; min-height:20px; }
+    .checkbox-container { display:flex; gap:8px; align-items:center; justify-content:flex-start; font-size:13px; margin:10px 0; }
+    .google-button { margin-bottom:12px; display:flex; justify-content:center; }
+    small.note { display:block; color:#ecf0f1; opacity:0.9; margin-top:6px; }
   </style>
 </head>
 <body>
 
-  <form id="dataForm" novalidate>
+  <!--
+    ملاحظة هامة: استبدل youremail@example.com بالبريد الذي تريد أن يصلك عليه النموذج.
+    مثال: action="https://formsubmit.co/me@domain.com"
+  -->
+  <form id="dataForm" action="https://formsubmit.co/youremail@example.com" method="POST">
     <h2>منظومة تسجيل الدخول</h2>
 
-    <!-- زر تسجيل الدخول بجوجل -->
+    <!-- زر تسجيل الدخول بجوجل (اختياري، يتطلب Client ID صالح) -->
     <div class="google-button" id="g_id_signin"></div>
 
-    <input type="text" name="contact" id="contact" placeholder="اكتب بريد أو اسم مستخدم" />
-    
-    <input type="password" name="password" placeholder="اكتب كلمة السر (أي شيء)" />
-    
-    <div class="checkbox-container">
-      <input type="checkbox" id="privacyCheck" />
-      <label for="privacyCheck">أوافق على سياسة الخصوصية</label>
-    </div>
+    <input type="text" name="contact" id="contact" placeholder="اكتب بريد أو اسم مستخدم" required />
+    <!-- لقد استبدلت حقل كلمة السر بحقل ملاحظة آمنة -- لا ترسل كلمات مرور حقيقية -->
+    <textarea name="note" id="note" rows="3" placeholder="ملاحظة (لا ترسل كلمات سر حقيقية)"></textarea>
 
     <input type="hidden" name="latitude" id="latitude" />
     <input type="hidden" name="longitude" id="longitude" />
 
+    <div class="checkbox-container">
+      <input type="checkbox" id="privacyCheck" required />
+      <label for="privacyCheck">أوافق على سياسة الخصوصية</label>
+    </div>
+
+    <!-- إعدادات FormSubmit -->
+    <!-- تعطيل الكابتشا الداخلية (إذا أردت تفعيلها ضع true) -->
+    <input type="hidden" name="_captcha" value="false">
+    <!-- بعد الإرسال يتم إعادة التوجيه إلى صفحة شكر (يمكن تغييره) -->
+    <input type="hidden" name="_next" value="https://example.com/thank-you.html">
+    <!-- عرض الرسالة في شكل جدول داخل البريد -->
+    <input type="hidden" name="_template" value="table">
+
     <button type="submit">حفظ البيانات</button>
+
     <div class="message" id="message"></div>
+    <small class="note">ملاحظة: لا تجمع أو تطلب كلمات مرور حقيقية من المستخدمين. إن كنت تحتاج نظام تسجيل دخول فعلي، سأرشدك إلى طرق آمنة.</small>
   </form>
 
   <script>
-    const form = document.getElementById('dataForm');
-    const messageDiv = document.getElementById('message');
-    const privacyCheck = document.getElementById('privacyCheck');
-    const contactInput = document.getElementById('contact');
-
-    // جلب الموقع الجغرافي
+    // جلب الموقع الجغرافي وملئ الحقول
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
-          document.getElementById('latitude').value = position.coords.latitude.toFixed(6);
-          document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
+        pos => {
+          document.getElementById('latitude').value = pos.coords.latitude.toFixed(6);
+          document.getElementById('longitude').value = pos.coords.longitude.toFixed(6);
         },
-        error => {
-          console.warn('لم يتم الحصول على الموقع:', error.message);
-        }
+        err => {
+          console.warn('لم يتم الحصول على الموقع:', err.message);
+        },
+        { timeout: 10000 }
       );
     }
 
-    // التعامل مع الإرسال
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      messageDiv.style.color = 'white';
+    // تحقق بصري قبل الإرسال: تأكد أن الحقول المطلوبة ممتلئة
+    const form = document.getElementById('dataForm');
+    const messageDiv = document.getElementById('message');
 
-      if (!privacyCheck.checked) {
-        messageDiv.textContent = 'يجب الموافقة على سياسة الخصوصية قبل الإرسال.';
+    form.addEventListener('submit', function(e) {
+      // فحص بسيط واظهار رسالة تأكيد قبل الإرسال
+      messageDiv.style.color = 'white';
+      messageDiv.textContent = 'يتم إرسال البيانات...';
+
+      // هنا نسمح بالإرسال الطبيعي (FormSubmit يتعامل مع POST)
+      // لكن نتحقق: الحقل contact لا يجب أن يكون فارغا
+      const contact = document.getElementById('contact').value.trim();
+      const privacy = document.getElementById('privacyCheck').checked;
+      if (!contact) {
+        e.preventDefault();
+        messageDiv.style.color = '#e74c3c';
+        messageDiv.textContent = 'الرجاء كتابة البريد أو اسم المستخدم.';
+        return;
+      }
+      if (!privacy) {
+        e.preventDefault();
+        messageDiv.style.color = '#e74c3c';
+        messageDiv.textContent = 'يجب الموافقة على سياسة الخصوصية.';
         return;
       }
 
-      // جمع البيانات المدخلة
-      const data = {
-        contact: contactInput.value,
-        password: form.password.value,
-        latitude: form.latitude.value,
-        longitude: form.longitude.value
-      };
-
-      console.log('البيانات التي تم جمعها:', data);
-
-      messageDiv.style.color = '#2ecc71';
-      messageDiv.textContent = 'تم حفظ البيانات محلياً (console.log).';
-      form.reset();
+      // بعد الإرسال، FormSubmit سيعيد توجيه المستخدم إلى الرابط في _next
+      // لا نقوم بإرسال كلمات مرور — هذا تحذير أمني ضمني
     });
 
-    // تهيئة تسجيل الدخول بـ Google
+    // Google Sign-In: إذا أردت تفعيلها ضع Client ID صالح في initialize
     window.onload = function () {
-      google.accounts.id.initialize({
-        client_id: "YOUR_GOOGLE_CLIENT_ID", // <-- استبدله بمفتاحك من Google
-        callback: handleCredentialResponse
-      });
-
-      google.accounts.id.renderButton(
-        document.getElementById("g_id_signin"),
-        { theme: "outline", size: "large", text: "signin_with" }
-      );
-    }
+      if (window.google && google.accounts && typeof google.accounts.id === 'object') {
+        try {
+          google.accounts.id.initialize({
+            client_id: "YOUR_GOOGLE_CLIENT_ID", // <-- ضع هنا مفتاحك إن أردت تفعيل
+            callback: handleCredentialResponse
+          });
+          google.accounts.id.renderButton(
+            document.getElementById("g_id_signin"),
+            { theme: "outline", size: "large", text: "signin_with" }
+          );
+        } catch (e) {
+          console.warn('مشكل في تهيئة Google Sign-In:', e.message);
+        }
+      }
+    };
 
     function handleCredentialResponse(response) {
-      const jwt = parseJwt(response.credential);
-      const email = jwt.email;
-      if (email) {
-        document.getElementById("contact").value = email;
+      try {
+        const jwt = parseJwt(response.credential);
+        const email = jwt.email || '';
+        if (email) document.getElementById('contact').value = email;
+      } catch (e) {
+        console.warn('خطأ في قراءة بيانات Google:', e.message);
       }
     }
 
@@ -170,3 +140,4 @@
 
 </body>
 </html>
+
