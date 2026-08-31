@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="description" content="MediCore - Comprehensive Medical Platform for Students & Professionals">
+    <meta name="description" content="MediCore - Complete Medical Platform">
     <meta name="theme-color" content="#0b1121">
-    <link rel="manifest" href="data:application/json,{'name':'MediCore Platform','short_name':'MediCore','start_url':'.','display':'standalone'}">
+    <link rel="manifest" href="data:application/json,{'name':'MediCore','short_name':'MediCore','start_url':'.','display':'standalone'}">
     <title>MediCore | Complete Medical Learning Ecosystem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
@@ -15,7 +15,6 @@
             --primary: #0b1121;
             --primary-light: #1a2332;
             --accent: #2d7aff;
-            --accent-glow: #2d7aff55;
             --gold: #fbbf24;
             --danger: #ef4444;
             --success: #22c55e;
@@ -41,11 +40,9 @@
             --text-secondary: #cbd5e1;
             --text-muted: #94a3b8;
             --border: #2d3a4f;
-            --shadow: 0 2px 8px rgba(0,0,0,0.4);
-            --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: var(--font-en);
             background: var(--bg);
@@ -59,7 +56,6 @@
         .lang-ar .container { direction: rtl; }
         .lang-ar .navbar .container { direction: rtl; }
         
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
@@ -91,6 +87,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            cursor: pointer;
         }
         .navbar-brand i { color: var(--gold); font-size: 1.5rem; }
         .nav-links {
@@ -120,7 +117,6 @@
         }
         .container { max-width: 1400px; margin: 0 auto; padding: 1rem 1rem 2rem; }
 
-        /* Auth Gate */
         .auth-gate {
             display: flex;
             justify-content: center;
@@ -151,10 +147,10 @@
             cursor: pointer;
             border-bottom: 3px solid transparent;
             font-size: 0.9rem;
+            transition: all var(--transition);
         }
         .tab-btn.active { border-color: var(--accent); color: var(--accent); }
 
-        /* Hero */
         .hero {
             text-align: center;
             padding: 2.5rem 1rem;
@@ -169,7 +165,6 @@
         .hero h1 span { color: var(--gold); }
         .hero p { opacity: 0.9; max-width: 650px; margin: 0.5rem auto 1.5rem; }
 
-        /* Global */
         .btn {
             padding: 0.5rem 1.2rem;
             border: none;
@@ -185,17 +180,18 @@
             text-decoration: none;
             white-space: nowrap;
         }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-primary { background: var(--accent); color: #fff; }
-        .btn-primary:hover { background: #2563eb; transform: scale(1.02); }
+        .btn-primary:hover:not(:disabled) { background: #2563eb; transform: scale(1.02); }
         .btn-gold { background: var(--gold); color: #0b1121; }
-        .btn-gold:hover { background: #f59e0b; transform: scale(1.02); }
+        .btn-gold:hover:not(:disabled) { background: #f59e0b; transform: scale(1.02); }
         .btn-success { background: var(--success); color: #fff; }
-        .btn-success:hover { background: #16a34a; transform: scale(1.02); }
+        .btn-success:hover:not(:disabled) { background: #16a34a; transform: scale(1.02); }
         .btn-danger { background: var(--danger); color: #fff; }
-        .btn-danger:hover { background: #dc2626; transform: scale(1.02); }
+        .btn-danger:hover:not(:disabled) { background: #dc2626; transform: scale(1.02); }
         .btn-sm { padding: 0.3rem 0.8rem; font-size: 0.7rem; }
         .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
-        .btn-outline:hover { background: var(--border); }
+        .btn-outline:hover:not(:disabled) { background: var(--border); }
 
         .stats-grid {
             display: grid;
@@ -231,10 +227,7 @@
             position: relative;
             transition: all var(--transition);
         }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
         .card .favorite-btn {
             position: absolute;
             top: 0.5rem;
@@ -245,6 +238,7 @@
             color: var(--text-muted);
             font-size: 1.2rem;
             transition: all var(--transition);
+            z-index: 5;
         }
         .card .favorite-btn.active { color: var(--gold); }
         .card .favorite-btn:hover { transform: scale(1.2); }
@@ -252,12 +246,12 @@
         .search-container {
             display: flex;
             gap: 0.5rem;
-            max-width: 650px;
+            max-width: 750px;
             margin: 0 auto 1.5rem;
             flex-wrap: wrap;
         }
+        .search-container .form-control { flex: 1; min-width: 120px; }
         .form-control {
-            width: 100%;
             padding: 0.6rem 1rem;
             border: 2px solid var(--border);
             border-radius: var(--radius);
@@ -358,7 +352,7 @@
             margin-top: 2rem;
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
         }
-        .lang-toggle {
+        .lang-toggle, .theme-toggle {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.15);
             color: #fff;
@@ -368,20 +362,10 @@
             font-size: 0.7rem;
             font-weight: 600;
             transition: all 0.2s;
+            font-family: inherit;
         }
-        .lang-toggle:hover { background: rgba(255,255,255,0.15); }
-        .theme-toggle {
-            background: rgba(255,255,255,0.08);
-            border: none;
-            color: #fff;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-        .theme-toggle:hover { background: rgba(255,255,255,0.15); }
+        .lang-toggle:hover, .theme-toggle:hover { background: rgba(255,255,255,0.15); }
+        .theme-toggle { width: 32px; height: 32px; border-radius: 50%; padding: 0; font-size: 1rem; }
         
         .progress-bar {
             width: 100%;
@@ -406,21 +390,20 @@
             border-radius: var(--radius);
             margin-bottom: 1rem;
         }
-        .certificate-btn {
-            margin-top: 1rem;
-            text-align: center;
-        }
+        .certificate-btn { margin-top: 1rem; text-align: center; }
+        
         @media (max-width: 640px) {
             .navbar .container { justify-content: center; }
             .nav-links { justify-content: center; width: 100%; }
             .nav-links a, .nav-links button { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+            .search-container .form-control { min-width: 100px; }
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
-            <a href="#" class="navbar-brand" onclick="navigate('home')"><i class="fas fa-heartbeat"></i> MediCore</a>
+            <a class="navbar-brand" onclick="navigate('home')"><i class="fas fa-heartbeat"></i> MediCore</a>
             <div class="nav-links" id="navLinks"></div>
         </div>
     </nav>
@@ -437,7 +420,7 @@
     <div id="toastContainer"></div>
 
     <footer class="footer">
-        <strong>MediCore Complete Medical Ecosystem</strong> &copy; 2026 | Open-source | All Features Included
+        <strong>MediCore Complete Medical Ecosystem</strong> &copy; 2026 | Open-source
     </footer>
 
     <script>
@@ -448,7 +431,7 @@
         const $$ = (s) => document.querySelectorAll(s);
         const LS = (k, v) => {
             if (v !== undefined) { localStorage.setItem(k, JSON.stringify(v)); return; }
-            return JSON.parse(localStorage.getItem(k));
+            try { return JSON.parse(localStorage.getItem(k)); } catch { return null; }
         };
 
         const YT_IDS = [
@@ -472,7 +455,7 @@
                         id: i,
                         title: `Comprehensive ${cat} Reference - Vol. ${((i % 5) + 1)}`,
                         author: `Dr. A. Thompson & Team (Ed. ${i})`,
-                        desc: `Peer-reviewed medical textbook for students and clinicians.`,
+                        desc: `Peer-reviewed medical textbook for students and clinicians. Covers all major topics in ${cat}.`,
                         cat: cat,
                         pages: 400 + (i % 800),
                         fileSize: `${(15 + (i % 60))} MB`,
@@ -539,7 +522,7 @@
                 { email: 'student@medicore.com', pass: 'Student2026', name: 'Alex Rivera', role: 'student' }
             ],
             posts: LS('db_posts') || [
-                { id: 1, author: 'Dr. Supervisor', title: 'Welcome to MediCore Platform', body: 'Explore thousands of medical resources, quizzes, and interactive content.' }
+                { id: 1, author: 'Dr. Supervisor', title: 'Welcome to MediCore', body: 'Explore thousands of medical resources.' }
             ],
             favorites: LS('favorites') || { books: [], videos: [] },
             quizHistory: LS('quizHistory') || []
@@ -574,10 +557,10 @@
             } else {
                 html = `
                     <a onclick="navigate('home')" data-tab="home">🏠 ${t('Home', 'الرئيسية')}</a>
-                    <a onclick="navigate('library')" data-tab="library">📚 ${t('Library', 'المكتبة')} (${DATA.books.length})</a>
-                    <a onclick="navigate('quizzes')" data-tab="quizzes">📝 ${t('Quizzes', 'الاختبارات')} (${DATA.quizzes.length})</a>
-                    <a onclick="navigate('videos')" data-tab="videos">🎬 ${t('Videos', 'الفيديوهات')} (${DATA.videos.length})</a>
-                    <a onclick="navigate('atlas')" data-tab="atlas">🖼 ${t('Atlas', 'الأطلس')} (${DATA.atlas.length})</a>
+                    <a onclick="navigate('library')" data-tab="library">📚 ${t('Library', 'المكتبة')}</a>
+                    <a onclick="navigate('quizzes')" data-tab="quizzes">📝 ${t('Quizzes', 'الاختبارات')}</a>
+                    <a onclick="navigate('videos')" data-tab="videos">🎬 ${t('Videos', 'الفيديوهات')}</a>
+                    <a onclick="navigate('atlas')" data-tab="atlas">🖼 ${t('Atlas', 'الأطلس')}</a>
                     <a onclick="navigate('forum')" data-tab="forum">💬 ${t('Forum', 'المجتمع')}</a>
                     <a onclick="navigate('dashboard')" data-tab="dashboard">📊 ${t('Dashboard', 'لوحة التحكم')}</a>
                 `;
@@ -592,7 +575,8 @@
             }
             $('#navLinks').innerHTML = html;
             $$('.nav-links a').forEach(a => {
-                if (a.getAttribute('onclick') && a.getAttribute('onclick').includes(STATE.currentTab)) a.classList.add('active');
+                const onclick = a.getAttribute('onclick') || '';
+                if (onclick.includes(`'${STATE.currentTab}'`)) a.classList.add('active');
                 else a.classList.remove('active');
             });
         }
@@ -625,7 +609,7 @@
             const el = document.createElement('div');
             el.className = 'toast';
             el.style.background = color;
-            el.innerHTML = msg;
+            el.textContent = msg;
             $('#toastContainer').appendChild(el);
             setTimeout(() => el.remove(), 3000);
         }
@@ -656,10 +640,13 @@
                 case 'forum': renderForumScreen(main); break;
                 case 'dashboard': renderDashboardScreen(main); break;
                 case 'supervisor': renderSupervisorScreen(main); break;
+                default: main.innerHTML = '<p>Page not found</p>';
             }
         }
 
-        // ----- AUTH GATE -----
+        // ============================================================
+        // AUTH GATE
+        // ============================================================
         let activeAuthMode = 'login';
         function renderGateScreen() {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
@@ -698,38 +685,39 @@
             activeAuthMode = mode;
             $$('.tab-btn').forEach(b => b.classList.remove('active'));
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            
             if (mode === 'login') {
-                $('#btnTabLogin').classList.add('active');
-                $('#authFields').innerHTML = `
+                document.getElementById('btnTabLogin')?.classList.add('active');
+                document.getElementById('authFields').innerHTML = `
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Email', 'البريد الإلكتروني')}:</label><input type="email" id="authEmail" class="form-control" required placeholder="email@domain.com"></div>
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Password', 'كلمة المرور')}:</label><input type="password" id="authPass" class="form-control" required placeholder="••••••••"></div>
                 `;
-                $('#authSubmitBtn').textContent = t('Access Platform', 'دخول المنصة');
+                document.getElementById('authSubmitBtn').textContent = t('Access Platform', 'دخول المنصة');
             } else if (mode === 'reg') {
-                $('#btnTabReg').classList.add('active');
-                $('#authFields').innerHTML = `
+                document.getElementById('btnTabReg')?.classList.add('active');
+                document.getElementById('authFields').innerHTML = `
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Full Name', 'الاسم الكامل')}:</label><input type="text" id="authName" class="form-control" required placeholder="Dr. John Doe"></div>
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('University / Hospital', 'الجامعة / المستشفى')}:</label><input type="text" id="authUniv" class="form-control" required placeholder="Medical School"></div>
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Email', 'البريد الإلكتروني')}:</label><input type="email" id="authEmail" class="form-control" required placeholder="email@domain.com"></div>
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Password', 'كلمة المرور')}:</label><input type="password" id="authPass" class="form-control" required placeholder="min 8 chars"></div>
                 `;
-                $('#authSubmitBtn').textContent = t('Create Student Account', 'إنشاء حساب طالب');
+                document.getElementById('authSubmitBtn').textContent = t('Create Student Account', 'إنشاء حساب طالب');
             } else if (mode === 'super') {
-                $('#btnTabSuper').classList.add('active');
-                $('#authFields').innerHTML = `
+                document.getElementById('btnTabSuper')?.classList.add('active');
+                document.getElementById('authFields').innerHTML = `
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Supervisor Name', 'اسم المشرف')}:</label><input type="text" id="authName" class="form-control" required placeholder="Dr. Sarah Lee"></div>
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Activation Key', 'كود التفعيل')}:</label><input type="text" id="authSuperKey" class="form-control" required placeholder="Enter supervisor key"><span style="font-size:0.65rem; color:var(--accent); display:block;">${t('Demo key: SUPER2026', 'للتجربة: SUPER2026')}</span></div>
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Professional Email', 'البريد المهني')}:</label><input type="email" id="authEmail" class="form-control" required placeholder="doctor@hospital.com"></div>
                     <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Password', 'كلمة المرور')}:</label><input type="password" id="authPass" class="form-control" required placeholder="••••••••"></div>
                 `;
-                $('#authSubmitBtn').textContent = t('Register as Supervisor', 'تسجيل كمشرف');
+                document.getElementById('authSubmitBtn').textContent = t('Register as Supervisor', 'تسجيل كمشرف');
             }
         }
 
         function handleAuth(e) {
             e.preventDefault();
-            let email = $('#authEmail').value.trim();
-            let pass = $('#authPass').value;
+            let email = document.getElementById('authEmail').value.trim();
+            let pass = document.getElementById('authPass').value;
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
 
             if (activeAuthMode === 'login') {
@@ -740,16 +728,16 @@
                     navigate('home');
                 } else { toast(t('Invalid email or password', 'خطأ في البريد أو كلمة المرور'), 'var(--danger)'); }
             } else if (activeAuthMode === 'reg') {
-                let name = $('#authName').value.trim();
+                let name = document.getElementById('authName').value.trim();
                 if (DB.users.find(x => x.email.toLowerCase() === email.toLowerCase())) { toast(t('Email already registered', 'البريد مسجل مسبقاً'), 'var(--danger)'); return; }
-                let newUser = { email, pass, name, role: 'student', univ: $('#authUniv').value };
+                let newUser = { email, pass, name, role: 'student', univ: document.getElementById('authUniv').value };
                 DB.users.push(newUser); saveUsers();
                 STATE.user = newUser; LS('app_user', newUser);
                 toast(`${t('Account created', 'تم إنشاء الحساب')} ${name}`, 'var(--success)');
                 navigate('home');
             } else if (activeAuthMode === 'super') {
-                let name = $('#authName').value.trim();
-                if ($('#authSuperKey').value !== 'SUPER2026') { toast(t('Invalid activation key', 'كود التفعيل غير صحيح'), 'var(--danger)'); return; }
+                let name = document.getElementById('authName').value.trim();
+                if (document.getElementById('authSuperKey').value !== 'SUPER2026') { toast(t('Invalid activation key', 'كود التفعيل غير صحيح'), 'var(--danger)'); return; }
                 if (DB.users.find(x => x.email.toLowerCase() === email.toLowerCase())) { toast(t('Email already registered', 'البريد مسجل مسبقاً'), 'var(--danger)'); return; }
                 let newUser = { email, pass, name, role: 'supervisor' };
                 DB.users.push(newUser); saveUsers();
@@ -759,13 +747,15 @@
             }
         }
 
-        // ----- HOME -----
+        // ============================================================
+        // HOME
+        // ============================================================
         function renderHomeScreen() {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             return `
             <div class="hero">
                 <h1>${t('MediCore', 'ميديكور')} <span>${t('Medical Knowledge Hub', 'المرجع الطبي الشامل')}</span></h1>
-                <p>${t('Access 2,000+ books, 200+ quizzes, 500+ videos, and 1,000+ atlas images — all in one platform.', 'وصول إلى 2000+ كتاب، 200+ اختبار، 500+ فيديو، و 1000+ صورة أطلس — كل ذلك في منصة واحدة.')}</p>
+                <p>${t('Access 2,000+ books, 200+ quizzes, 500+ videos, and 1,000+ atlas images.', 'وصول إلى 2000+ كتاب، 200+ اختبار، 500+ فيديو، و 1000+ صورة أطلس.')}</p>
                 <div><span class="badge badge-gold" style="font-size:0.9rem; padding:0.4rem 1.4rem;">${t('Welcome', 'مرحباً')} ${STATE.user.name}</span></div>
             </div>
             <div class="stats-grid">
@@ -779,24 +769,26 @@
             <div class="cards-grid">
                 <div class="card" style="cursor:pointer;" onclick="navigate('library')">
                     <h3 style="color:var(--accent); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-book"></i> ${t('Medical Library', 'المكتبة الطبية')}</h3>
-                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Browse and download 2,000+ references.', 'تصفح وحمل 2000+ مرجع طبي.')}</p>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Browse 2,000+ references.', 'تصفح 2000+ مرجع.')}</p>
                 </div>
                 <div class="card" style="cursor:pointer;" onclick="navigate('quizzes')">
                     <h3 style="color:var(--gold); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-feather-alt"></i> ${t('Quiz Bank', 'بنك الاختبارات')}</h3>
-                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Test your knowledge with 200 interactive exams.', 'اختبر معرفتك بـ 200 اختبار تفاعلي.')}</p>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('200 interactive exams.', '200 اختبار تفاعلي.')}</p>
                 </div>
                 <div class="card" style="cursor:pointer;" onclick="navigate('videos')">
                     <h3 style="color:var(--danger); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-play-circle"></i> ${t('Video Lectures', 'محاضرات فيديو')}</h3>
-                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Watch 500+ medical lectures.', 'شاهد 500+ محاضرة طبية.')}</p>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('500+ medical lectures.', '500+ محاضرة طبية.')}</p>
                 </div>
                 <div class="card" style="cursor:pointer;" onclick="navigate('dashboard')">
                     <h3 style="color:var(--success); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-chart-line"></i> ${t('My Progress', 'تقدمي')}</h3>
-                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Track your learning journey and achievements.', 'تابع رحلتك التعليمية وإنجازاتك.')}</p>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Track your achievements.', 'تابع إنجازاتك.')}</p>
                 </div>
             </div>`;
         }
 
-        // ----- LIBRARY -----
+        // ============================================================
+        // LIBRARY
+        // ============================================================
         let libSearchQuery = "", libSelectedCat = "", libFilterRating = "";
         function renderLibraryScreen(target) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
@@ -814,16 +806,15 @@
             let html = `
                 <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-book"></i> ${t('Medical Library', 'المكتبة الطبية')} (${DATA.books.length} ${t('books', 'كتاب')})</h2>
                 <div class="search-container">
-                    <input type="text" class="form-control" placeholder="${t('Search books or authors...', 'ابحث في الكتب أو المؤلفين...')}" value="${libSearchQuery}" oninput="libSearchQuery=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
-                    <select class="form-control" style="width:180px;" onchange="libSelectedCat=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
-                        <option value="">${t('All Categories', 'كل الأقسام')}</option>
+                    <input type="text" class="form-control" placeholder="${t('Search...', 'بحث...')}" value="${libSearchQuery}" oninput="libSearchQuery=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
+                    <select class="form-control" onchange="libSelectedCat=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
+                        <option value="">${t('All', 'الكل')}</option>
                         ${CATS.map(c => `<option value="${c}" ${libSelectedCat===c?'selected':''}>${c}</option>`).join('')}
                     </select>
-                    <select class="form-control" style="width:130px;" onchange="libFilterRating=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
-                        <option value="">${t('Rating', 'التقييم')}</option>
+                    <select class="form-control" onchange="libFilterRating=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
+                        <option value="">⭐ ${t('Rating', 'التقييم')}</option>
                         <option value="4.5" ${libFilterRating==='4.5'?'selected':''}>⭐ 4.5+</option>
                         <option value="4.0" ${libFilterRating==='4.0'?'selected':''}>⭐ 4.0+</option>
-                        <option value="3.5" ${libFilterRating==='3.5'?'selected':''}>⭐ 3.5+</option>
                     </select>
                 </div>
                 <div class="cards-grid">
@@ -834,11 +825,11 @@
                             <h4 style="font-weight:800; margin-top:1rem; min-height:44px; font-size:0.95rem; cursor:pointer;" onclick="showBookSummary(${b.id})">${b.title}</h4>
                             <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.5rem;">✍️ ${b.author}</p>
                             <div style="font-size:0.72rem; margin-bottom:0.8rem; background:rgba(0,0,0,0.03); padding:0.4rem; border-radius:4px;">
-                                📄 ${t('Size', 'الحجم')}: ${b.fileSize} | 📦 ${t('Pages', 'الصفحات')}: ${b.pages} | ⭐ ${b.rating}
+                                📄 ${b.fileSize} | 📦 ${b.pages} ${t('pages', 'صفحة')} | ⭐ ${b.rating}
                             </div>
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <span style="font-size:0.7rem; color:var(--text-muted);"><i class="fas fa-download"></i> ${b.downloads}</span>
-                                <a href="${b.link}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-external-link-alt"></i> ${t('Open Source', 'فتح المصدر')}</a>
+                                <a href="${b.link}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-external-link-alt"></i> ${t('Open', 'فتح')}</a>
                             </div>
                         </div>`).join('')}
                 </div>`;
@@ -849,6 +840,7 @@
         function showBookSummary(id) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let book = DATA.books.find(b => b.id === id);
+            if (!book) return;
             openModal(`
                 <h3 style="font-weight:900; color:var(--accent);">${book.title}</h3>
                 <p><strong>${t('Author', 'المؤلف')}:</strong> ${book.author}</p>
@@ -861,7 +853,9 @@
             `);
         }
 
-        // ----- QUIZZES -----
+        // ============================================================
+        // QUIZZES
+        // ============================================================
         let quizSelectedCat = "";
         function renderQuizzesScreen(target) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
@@ -874,7 +868,7 @@
             let paginated = filtered.slice(start, start + STATE.perPage);
 
             let html = `
-                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-feather-alt"></i> ${t('Quiz Bank', 'بنك الاختبارات')} (${DATA.quizzes.length} ${t('quizzes available', 'اختبار متاح')})</h2>
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-feather-alt"></i> ${t('Quiz Bank', 'بنك الاختبارات')} (${DATA.quizzes.length})</h2>
                 <div class="search-container">
                     <select class="form-control" onchange="quizSelectedCat=this.value; STATE.pages.quizzes=1; renderQuizzesScreen($('#mainContent'))">
                         <option value="">${t('All Specialties', 'كل التخصصات')}</option>
@@ -886,8 +880,8 @@
                         <div class="card">
                             <span class="badge badge-gold" style="position:absolute; top:0.5rem; left:0.5rem;">${q.cat}</span>
                             <h4 style="font-weight:800; margin-top:1rem; margin-bottom:0.5rem;">${q.title}</h4>
-                            <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">⏱ ${t('Time', 'الوقت')}: ${q.time} min | ❓ ${t('Questions', 'الأسئلة')}: ${q.questionsCount}</p>
-                            <button onclick="startQuiz(${q.id})" class="btn btn-primary btn-sm" style="width:100%; justify-content:center;"><i class="fas fa-play"></i> ${t('Start Quiz', 'بدء الاختبار')}</button>
+                            <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">⏱ ${q.time} min | ❓ ${q.questionsCount}</p>
+                            <button onclick="startQuiz(${q.id})" class="btn btn-primary btn-sm" style="width:100%; justify-content:center;"><i class="fas fa-play"></i> ${t('Start', 'بدء')}</button>
                         </div>`).join('')}
                 </div>`;
             html += renderPaginationControls('quizzes', totalPages);
@@ -896,20 +890,20 @@
 
         function startQuiz(id) {
             STATE.activeQuiz = DATA.quizzes.find(q => q.id === id);
+            if (!STATE.activeQuiz) return;
             STATE.answers = {};
-            STATE.timeRemaining = STATE.activeQuiz.time * 60; // in seconds
+            STATE.timeRemaining = STATE.activeQuiz.time * 60;
             renderQuizzesScreen($('#mainContent'));
             
-            // Start timer
             if (STATE.quizTimer) clearInterval(STATE.quizTimer);
             STATE.quizTimer = setInterval(() => {
                 STATE.timeRemaining--;
                 if (STATE.timeRemaining <= 0) {
                     clearInterval(STATE.quizTimer);
+                    STATE.quizTimer = null;
                     toast('Time is up! Submitting automatically.', 'var(--danger)');
                     submitQuiz();
                 }
-                // Update timer display if visible
                 const timerEl = document.getElementById('quizTimer');
                 if (timerEl) {
                     let mins = Math.floor(STATE.timeRemaining / 60);
@@ -923,41 +917,36 @@
         function renderActiveQuiz() {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let q = STATE.activeQuiz;
+            if (!q) return '<p>No active quiz</p>';
             let mins = Math.floor(STATE.timeRemaining / 60);
             let secs = STATE.timeRemaining % 60;
-            let progress = ((q.questions.length - Object.keys(STATE.answers).length) / q.questions.length) * 100;
+            let answered = Object.keys(STATE.answers).length;
+            let progress = (answered / q.questions.length) * 100;
             
             return `
                 <div class="card" style="max-width:800px; margin:0 auto;">
                     <h2 style="font-weight:900; color:var(--accent); margin-bottom:0.5rem;">${q.title}</h2>
                     <div class="timer" id="quizTimer">${mins}:${secs.toString().padStart(2, '0')}</div>
                     <div class="progress-bar">
-                        <div class="fill" style="width:${100-progress}%;"></div>
+                        <div class="fill" style="width:${progress}%;"></div>
                     </div>
                     <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">
-                        ${t('Questions answered', 'الأسئلة المجاب عنها')}: ${Object.keys(STATE.answers).length}/${q.questions.length}
+                        ${t('Answered', 'أجبت')}: ${answered}/${q.questions.length}
                     </p>
                     ${q.questions.map((quest, idx) => `
                         <div style="margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1rem;">
                             <p style="font-weight:700; margin-bottom:0.5rem;">${t('Q', 'س')} ${idx+1}: ${quest.q}</p>
                             <div style="display:grid; grid-template-columns:1fr; gap:0.5rem;">
-                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='a'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'a')">
-                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='a'?'checked':''}> ${quest.a}
-                                </label>
-                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='b'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'b')">
-                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='b'?'checked':''}> ${quest.b}
-                                </label>
-                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='c'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'c')">
-                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='c'?'checked':''}> ${quest.c}
-                                </label>
-                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='d'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'd')">
-                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='d'?'checked':''}> ${quest.d}
-                                </label>
+                                ${['a','b','c','d'].map(letter => `
+                                    <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]===letter?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, '${letter}')">
+                                        <input type="radio" name="q_${idx}" ${STATE.answers[idx]===letter?'checked':''}> ${quest[letter]}
+                                    </label>
+                                `).join('')}
                             </div>
                         </div>`).join('')}
                     <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                        <button onclick="submitQuiz()" class="btn btn-success">${t('Submit & Score', 'إنهاء ورصد الدرجة')}</button>
-                        <button onclick="STATE.activeQuiz=null; clearInterval(STATE.quizTimer); renderQuizzesScreen($('#mainContent'));" class="btn btn-danger">${t('Cancel', 'إلغاء')}</button>
+                        <button onclick="submitQuiz()" class="btn btn-success">${t('Submit', 'إنهاء')}</button>
+                        <button onclick="STATE.activeQuiz=null; clearInterval(STATE.quizTimer); STATE.quizTimer=null; renderQuizzesScreen($('#mainContent'));" class="btn btn-danger">${t('Cancel', 'إلغاء')}</button>
                     </div>
                 </div>`;
         }
@@ -971,31 +960,33 @@
         function submitQuiz() {
             if (STATE.quizTimer) { clearInterval(STATE.quizTimer); STATE.quizTimer = null; }
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
-            let q = STATE.activeQuiz; let score = 0;
-            let reviewHtml = `<h3 style="font-weight:900; margin-bottom:1rem;">${t('Answer Review', 'مراجعة الإجابات')}</h3>`;
+            let q = STATE.activeQuiz;
+            if (!q) return;
+            let score = 0;
             let details = [];
+            let reviewHtml = `<h3 style="font-weight:900; margin-bottom:1rem;">${t('Answer Review', 'مراجعة الإجابات')}</h3>`;
             
             q.questions.forEach((quest, idx) => {
-                let userAns = STATE.answers[idx]; let isRight = userAns === quest.right;
+                let userAns = STATE.answers[idx] || '';
+                let isRight = userAns === quest.right;
                 if (isRight) score++;
                 details.push({ question: quest.q, userAnswer: userAns, correct: quest.right, isRight, explanation: quest.exp });
                 reviewHtml += `
                     <div style="margin-bottom:1rem; padding:0.8rem; background:${isRight?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)'}; border-radius:var(--radius); border:1px solid ${isRight?'var(--success)':'var(--danger)'}">
                         <p><strong>${t('Q', 'س')} ${idx+1}: ${quest.q}</strong></p>
                         <p style="font-size:0.85rem; margin:0.3rem 0;">${t('Your answer', 'إجابتك')}: ${userAns ? userAns.toUpperCase() : t('Not answered', 'لم تُجب')} | ${t('Correct', 'الصحيحة')}: ${quest.right.toUpperCase()}</p>
-                        <p style="font-size:0.75rem; color:var(--text-secondary); background:rgba(0,0,0,0.03); padding:0.3rem; border-radius:4px;">💡 <strong>${t('Explanation', 'التفسير')}:</strong> ${quest.exp}</p>
+                        <p style="font-size:0.75rem; color:var(--text-secondary); background:rgba(0,0,0,0.03); padding:0.3rem; border-radius:4px;">💡 ${quest.exp}</p>
                     </div>`;
             });
             
             let percent = (score / q.questions.length) * 100;
             
-            // Save to history
             DB.quizHistory.push({
                 quizId: q.id,
                 title: q.title,
                 score: score,
                 total: q.questions.length,
-                percent: percent,
+                percent: Math.round(percent),
                 date: new Date().toISOString(),
                 details: details
             });
@@ -1003,17 +994,17 @@
             
             reviewHtml = `
                 <div style="text-align:center; margin-bottom:1.5rem;">
-                    <h2 style="font-size:2.5rem; font-weight:900; color:${percent>=60?'var(--success)':'var(--danger)'};">${percent}%</h2>
+                    <h2 style="font-size:2.5rem; font-weight:900; color:${percent>=60?'var(--success)':'var(--danger)'};">${Math.round(percent)}%</h2>
                     <p>${t('You answered correctly', 'لقد أجبت بشكل صحيح على')} ${score}/${q.questions.length}</p>
                     ${percent >= 70 ? `<div style="margin-top:0.5rem;"><span class="badge badge-success" style="font-size:1rem;">🏆 ${t('Excellent!', 'ممتاز!')}</span></div>` : ''}
                 </div>
                 ${reviewHtml}
                 <div class="certificate-btn">
-                    <button onclick="printCertificate('${q.title}', ${percent}, ${score}, ${q.questions.length})" class="btn btn-gold">
-                        <i class="fas fa-certificate"></i> ${t('Download Certificate', 'تحميل شهادة')}
+                    <button onclick="printCertificate('${q.title}', ${Math.round(percent)}, ${score}, ${q.questions.length})" class="btn btn-gold">
+                        <i class="fas fa-certificate"></i> ${t('Certificate', 'شهادة')}
                     </button>
                     <button onclick="retryQuiz(${q.id})" class="btn btn-primary" style="margin-right:0.5rem;">
-                        <i class="fas fa-redo"></i> ${t('Retry Quiz', 'إعادة المحاولة')}
+                        <i class="fas fa-redo"></i> ${t('Retry', 'إعادة')}
                     </button>
                 </div>
             `;
@@ -1031,11 +1022,12 @@
         function printCertificate(title, percent, score, total) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let win = window.open('', '_blank');
+            if (!win) { toast('Please allow popups for this feature', 'var(--danger)'); return; }
             win.document.write(`
                 <html><head><title>Certificate</title>
                 <style>
-                    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-                    .cert { border: 5px solid #fbbf24; padding: 40px; border-radius: 20px; max-width: 600px; margin: auto; }
+                    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f4f7fc; }
+                    .cert { border: 5px solid #fbbf24; padding: 40px; border-radius: 20px; max-width: 600px; margin: auto; background: #fff; }
                     h1 { color: #0b1121; }
                     .score { font-size: 3rem; font-weight: 900; color: #2d7aff; }
                 </style>
@@ -1052,13 +1044,15 @@
                     <p>(${score}/${total} ${t('correct', 'إجابة صحيحة')})</p>
                     <p style="margin-top:20px; color:#666;">${new Date().toLocaleDateString()}</p>
                 </div>
-                <script>window.print();<\/script>
+                <script>window.onload = function() { window.print(); }<\/script>
                 </body></html>
             `);
             win.document.close();
         }
 
-        // ----- VIDEOS -----
+        // ============================================================
+        // VIDEOS
+        // ============================================================
         let vidSearchQuery = "";
         function renderVideosScreen(target) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
@@ -1069,9 +1063,9 @@
             let paginated = filtered.slice(start, start + STATE.perPage);
 
             let html = `
-                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-video"></i> ${t('Video Lectures', 'محاضرات فيديو')} (${DATA.videos.length} ${t('lectures', 'محاضرة')})</h2>
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-video"></i> ${t('Video Lectures', 'محاضرات فيديو')} (${DATA.videos.length})</h2>
                 <div class="search-container">
-                    <input type="text" class="form-control" placeholder="${t('Search videos...', 'ابحث عن فيديو...')}" value="${vidSearchQuery}" oninput="vidSearchQuery=this.value; STATE.pages.videos=1; renderVideosScreen($('#mainContent'))">
+                    <input type="text" class="form-control" placeholder="${t('Search...', 'بحث...')}" value="${vidSearchQuery}" oninput="vidSearchQuery=this.value; STATE.pages.videos=1; renderVideosScreen($('#mainContent'))">
                 </div>
                 <div class="cards-grid">
                     ${paginated.map(v => `
@@ -1083,7 +1077,7 @@
                             </div>
                             <span class="badge badge-danger">${v.cat}</span>
                             <h4 style="font-weight:800; font-size:0.85rem; margin:0.5rem 0; min-height:40px;">${v.title}</h4>
-                            <p style="font-size:0.72rem; color:var(--text-muted);">👨‍🏫 ${t('Lecturer', 'المحاضر')}: ${v.lecturer} | ⏱ ${v.duration}</p>
+                            <p style="font-size:0.72rem; color:var(--text-muted);">👨‍🏫 ${v.lecturer} | ⏱ ${v.duration}</p>
                             <button onclick="watchVideo('${v.youtubeId}')" class="btn btn-danger btn-sm" style="width:100%; justify-content:center; margin-top:0.5rem;"><i class="fab fa-youtube"></i> ${t('Watch', 'تشغيل')}</button>
                         </div>`).join('')}
                 </div>`;
@@ -1095,7 +1089,9 @@
             openModal(`<div class="video-box"><iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allowfullscreen></iframe></div>`);
         }
 
-        // ----- ATLAS -----
+        // ============================================================
+        // ATLAS
+        // ============================================================
         function renderAtlasScreen(target) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let totalPages = Math.ceil(DATA.atlas.length / STATE.perPage) || 1;
@@ -1103,7 +1099,7 @@
             let paginated = DATA.atlas.slice(start, start + STATE.perPage);
 
             let html = `
-                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-images"></i> ${t('Medical Atlas', 'الأطلس الطبي')} (${DATA.atlas.length} ${t('images', 'صورة')})</h2>
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-images"></i> ${t('Medical Atlas', 'الأطلس الطبي')} (${DATA.atlas.length})</h2>
                 <div class="cards-grid">
                     ${paginated.map(a => `
                         <div class="card" style="text-align:center;">
@@ -1116,17 +1112,19 @@
             target.innerHTML = html;
         }
 
-        // ----- FORUM -----
+        // ============================================================
+        // FORUM
+        // ============================================================
         function renderForumScreen(target) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let html = `
-                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-comments"></i> ${t('Medical Community Forum', 'منتدى المجتمع الطبي')}</h2>
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-comments"></i> ${t('Community Forum', 'منتدى المجتمع')}</h2>
                 <div class="card" style="margin-bottom:1.5rem;">
-                    <h4 style="font-weight:800; margin-bottom:0.5rem; color:var(--accent);">${t('Start a new discussion', 'ابدأ نقاشاً جديداً')}:</h4>
+                    <h4 style="font-weight:800; margin-bottom:0.5rem; color:var(--accent);">${t('New Discussion', 'نقاش جديد')}:</h4>
                     <form onsubmit="addPost(event)">
-                        <input type="text" id="postTitle" class="form-control" placeholder="${t('Topic title', 'عنوان الموضوع')}" required style="margin-bottom:0.5rem;">
-                        <textarea id="postBody" class="form-control" placeholder="${t('Write your message...', 'اكتب رسالتك...')}" required style="margin-bottom:0.5rem; height:80px; font-family:inherit;"></textarea>
-                        <button type="submit" class="btn btn-primary">${t('Post to Community', 'نشر في المجتمع')}</button>
+                        <input type="text" id="postTitle" class="form-control" placeholder="${t('Title', 'العنوان')}" required style="margin-bottom:0.5rem;">
+                        <textarea id="postBody" class="form-control" placeholder="${t('Message...', 'رسالتك...')}" required style="margin-bottom:0.5rem; height:80px; font-family:inherit;"></textarea>
+                        <button type="submit" class="btn btn-primary">${t('Post', 'نشر')}</button>
                     </form>
                 </div>
                 <div style="display:flex; flex-direction:column; gap:1rem;">
@@ -1143,14 +1141,18 @@
         function addPost(e) {
             e.preventDefault();
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
-            let title = $('#postTitle').value.trim(); let body = $('#postBody').value.trim();
+            let title = document.getElementById('postTitle').value.trim();
+            let body = document.getElementById('postBody').value.trim();
+            if (!title || !body) { toast(t('Please fill all fields', 'املأ جميع الحقول'), 'var(--danger)'); return; }
             DB.posts.unshift({ id: Date.now(), author: STATE.user.name, title, body });
             savePosts();
-            toast(t('Posted successfully!', 'تم النشر بنجاح!'), 'var(--success)');
+            toast(t('Posted!', 'تم النشر!'), 'var(--success)');
             renderForumScreen($('#mainContent'));
         }
 
-        // ----- DASHBOARD -----
+        // ============================================================
+        // DASHBOARD
+        // ============================================================
         function renderDashboardScreen(target) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let history = DB.quizHistory;
@@ -1159,17 +1161,17 @@
             let bestScore = totalQuizzes > 0 ? Math.max(...history.map(h => h.percent)) : 0;
             
             let html = `
-                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-chart-line"></i> ${t('My Learning Dashboard', 'لوحة التعلم الخاصة بي')}</h2>
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-chart-line"></i> ${t('My Dashboard', 'لوحة التحكم')}</h2>
                 <div class="stats-grid">
                     <div class="stat-card"><i class="fas fa-paste"></i><h3>${totalQuizzes}</h3><p>${t('Quizzes Taken', 'اختبارات مكتملة')}</p></div>
-                    <div class="stat-card"><i class="fas fa-percentage"></i><h3>${avgScore}%</h3><p>${t('Average Score', 'متوسط الدرجات')}</p></div>
+                    <div class="stat-card"><i class="fas fa-percentage"></i><h3>${avgScore}%</h3><p>${t('Average', 'المتوسط')}</p></div>
                     <div class="stat-card"><i class="fas fa-trophy"></i><h3>${bestScore}%</h3><p>${t('Best Score', 'أفضل نتيجة')}</p></div>
                     <div class="stat-card"><i class="fas fa-star"></i><h3>${DB.favorites.books.length + DB.favorites.videos.length}</h3><p>${t('Favorites', 'المفضلة')}</p></div>
                 </div>
                 <div class="card">
-                    <h4 style="font-weight:800; margin-bottom:1rem;">${t('Quiz History', 'سجل الاختبارات')}</h4>
-                    ${history.length === 0 ? `<p style="color:var(--text-muted);">${t('No quizzes taken yet. Start learning!', 'لم تخض أي اختبار بعد. ابدأ التعلم!')}</p>` : ''}
-                    ${history.slice().reverse().map(h => `
+                    <h4 style="font-weight:800; margin-bottom:1rem;">${t('History', 'السجل')}</h4>
+                    ${history.length === 0 ? `<p style="color:var(--text-muted);">${t('No quizzes yet.', 'لم تخض أي اختبار بعد.')}</p>` : ''}
+                    ${history.slice().reverse().map((h, idx) => `
                         <div style="padding:0.8rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
                             <div>
                                 <strong>${h.title}</strong>
@@ -1179,7 +1181,7 @@
                                 <span class="badge ${h.percent >= 70 ? 'badge-success' : h.percent >= 50 ? 'badge-gold' : 'badge-danger'}">
                                     ${h.percent}% (${h.score}/${h.total})
                                 </span>
-                                <button onclick="showQuizDetails(${history.indexOf(h)})" class="btn btn-sm btn-outline" style="margin-right:0.5rem;">
+                                <button onclick="showQuizDetails(${DB.quizHistory.length - 1 - idx})" class="btn btn-sm btn-outline" style="margin-right:0.5rem;">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
@@ -1188,40 +1190,44 @@
             target.innerHTML = html;
         }
 
-        function showQuizDetails(index) {
-            let entry = DB.quizHistory[index];
+        function showQuizDetails(reverseIndex) {
+            let entry = DB.quizHistory[reverseIndex];
+            if (!entry) return;
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let html = `<h3 style="font-weight:900; margin-bottom:1rem;">${entry.title}</h3>
-                <p><strong>Score:</strong> ${entry.percent}% (${entry.score}/${entry.total})</p>
-                <p><strong>Date:</strong> ${new Date(entry.date).toLocaleString()}</p>
+                <p><strong>${t('Score', 'الدرجة')}:</strong> ${entry.percent}% (${entry.score}/${entry.total})</p>
+                <p><strong>${t('Date', 'التاريخ')}:</strong> ${new Date(entry.date).toLocaleString()}</p>
                 <hr style="margin:1rem 0;">
                 ${entry.details.map((d, i) => `
                     <div style="margin-bottom:0.8rem; padding:0.5rem; background:${d.isRight?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)'}; border-radius:4px;">
                         <p><strong>Q${i+1}:</strong> ${d.question}</p>
-                        <p style="font-size:0.85rem;">Your answer: ${d.userAnswer ? d.userAnswer.toUpperCase() : 'Not answered'} | Correct: ${d.correct.toUpperCase()}</p>
+                        <p style="font-size:0.85rem;">${t('Your answer', 'إجابتك')}: ${d.userAnswer ? d.userAnswer.toUpperCase() : t('Not answered', 'لم تُجب')} | ${t('Correct', 'الصحيحة')}: ${d.correct.toUpperCase()}</p>
                         <p style="font-size:0.75rem; color:var(--text-secondary);">${d.explanation}</p>
                     </div>`).join('')}`;
             openModal(html);
         }
 
-        // ----- SUPERVISOR -----
+        // ============================================================
+        // SUPERVISOR
+        // ============================================================
         function renderSupervisorScreen(target) {
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             let html = `
                 <h2 style="font-weight:900; color:var(--gold); margin-bottom:1rem;"><i class="fas fa-user-shield"></i> ${t('Admin Dashboard', 'لوحة الإشراف')}</h2>
                 <div class="stats-grid">
-                    <div class="stat-card"><h3>${DB.users.length}</h3><p>${t('Total Users', 'إجمالي المستخدمين')}</p></div>
-                    <div class="stat-card"><h3>${DB.posts.length}</h3><p>${t('Forum Posts', 'مواضيع المنتدى')}</p></div>
-                    <div class="stat-card"><h3>${DB.quizHistory.length}</h3><p>${t('Total Quizzes Taken', 'إجمالي الاختبارات المكتملة')}</p></div>
+                    <div class="stat-card"><h3>${DB.users.length}</h3><p>${t('Users', 'المستخدمين')}</p></div>
+                    <div class="stat-card"><h3>${DB.posts.length}</h3><p>${t('Posts', 'المواضيع')}</p></div>
+                    <div class="stat-card"><h3>${DB.quizHistory.length}</h3><p>${t('Quizzes Taken', 'اختبارات مكتملة')}</p></div>
                 </div>
                 <div class="card">
-                    <h4 style="font-weight:800; margin-bottom:0.5rem;">${t('Registered Members', 'الأعضاء المسجلون')}:</h4>
+                    <h4 style="font-weight:800; margin-bottom:0.5rem;">${t('Members', 'الأعضاء')}:</h4>
                     <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; font-size:0.85rem; text-align:right;">
+                        <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
                             <thead>
                                 <tr style="border-bottom:2px solid var(--border);">
-                                    <th style="padding:0.5rem;">${t('Name', 'الاسم')}</th>
-                                    <th style="padding:0.5rem;">${t('Email', 'البريد')}</th>
-                                    <th style="padding:0.5rem;">${t('Role', 'الصلاحية')}</th>
+                                    <th style="padding:0.5rem; text-align:right;">${t('Name', 'الاسم')}</th>
+                                    <th style="padding:0.5rem; text-align:right;">${t('Email', 'البريد')}</th>
+                                    <th style="padding:0.5rem; text-align:right;">${t('Role', 'الصلاحية')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1238,9 +1244,12 @@
             target.innerHTML = html;
         }
 
-        // ----- FAVORITES -----
+        // ============================================================
+        // FAVORITES
+        // ============================================================
         function toggleFavorite(type, id) {
             let list = DB.favorites[type];
+            if (!list) return;
             let idx = list.indexOf(id);
             if (idx > -1) {
                 list.splice(idx, 1);
@@ -1250,7 +1259,7 @@
                 toast('Added to favorites!', 'var(--gold)');
             }
             saveFavorites();
-            renderContent(); // Refresh current view
+            renderContent();
         }
 
         // ============================================================
@@ -1258,13 +1267,13 @@
         // ============================================================
         function renderPaginationControls(type, totalPages) {
             if (totalPages <= 1) return '';
-            let curr = STATE.pages[type];
+            let curr = STATE.pages[type] || 1;
             const t = (en, ar) => STATE.lang === 'en' ? en : ar;
             return `
                 <div class="pagination">
-                    <button class="btn btn-sm btn-primary" onclick="changePage('${type}', ${curr - 1})" ${curr===1?'disabled':''}>${t('Previous', 'السابق')}</button>
+                    <button class="btn btn-sm btn-primary" onclick="changePage('${type}', ${curr - 1})" ${curr<=1?'disabled':''}>${t('Previous', 'السابق')}</button>
                     <span style="font-size:0.8rem; font-weight:700; margin:0 10px;">${t('Page', 'صفحة')} ${curr} ${t('of', 'من')} ${totalPages}</span>
-                    <button class="btn btn-sm btn-primary" onclick="changePage('${type}', ${curr + 1})" ${curr===totalPages?'disabled':''}>${t('Next', 'التالي')}</button>
+                    <button class="btn btn-sm btn-primary" onclick="changePage('${type}', ${curr + 1})" ${curr>=totalPages?'disabled':''}>${t('Next', 'التالي')}</button>
                 </div>`;
         }
 
@@ -1277,7 +1286,7 @@
         // ============================================================
         // INIT
         // ============================================================
-        window.onload = () => {
+        window.onload = function() {
             document.body.classList.toggle('lang-ar', STATE.lang === 'ar');
             navigate(STATE.user ? 'home' : 'gate');
         };
