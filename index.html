@@ -1,112 +1,1286 @@
-
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>معلومات المستخدم</title>
-  <style>
-    body {
-      background: linear-gradient(to right, #2c3e50, #3498db);
-      color: white;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="MediCore - Comprehensive Medical Platform for Students & Professionals">
+    <meta name="theme-color" content="#0b1121">
+    <link rel="manifest" href="data:application/json,{'name':'MediCore Platform','short_name':'MediCore','start_url':'.','display':'standalone'}">
+    <title>MediCore | Complete Medical Learning Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0b1121;
+            --primary-light: #1a2332;
+            --accent: #2d7aff;
+            --accent-glow: #2d7aff55;
+            --gold: #fbbf24;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --bg: #f4f7fc;
+            --card: #ffffff;
+            --text: #0b1121;
+            --text-secondary: #334155;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --radius: 0.8rem;
+            --radius-xl: 1.8rem;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-en: 'Inter', sans-serif;
+            --font-ar: 'Cairo', sans-serif;
+        }
+        [data-theme="dark"] {
+            --primary: #0f172a;
+            --bg: #0b1121;
+            --card: #1a2332;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #2d3a4f;
+            --shadow: 0 2px 8px rgba(0,0,0,0.4);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: var(--font-en);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+        }
+        .lang-ar body { font-family: var(--font-ar); direction: rtl; }
+        .lang-ar .container { direction: rtl; }
+        .lang-ar .navbar .container { direction: rtl; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+        
+        .navbar {
+            background: linear-gradient(135deg, #0b1121, #1a2332);
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(45, 122, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .navbar-brand i { color: var(--gold); font-size: 1.5rem; }
+        .nav-links {
+            display: flex;
+            gap: 0.1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a, .nav-links button {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            padding: 0.3rem 0.7rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.78rem;
+            transition: all var(--transition);
+            border: 1px solid transparent;
+            cursor: pointer;
+            white-space: nowrap;
+            background: transparent;
+            font-family: inherit;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border-color: rgba(255,255,255,0.15);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 1rem 1rem 2rem; }
 
-    h1 {
-      margin-bottom: 10px;
-      font-size: 28px;
-    }
+        /* Auth Gate */
+        .auth-gate {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 1rem;
+        }
+        .auth-card {
+            background: var(--card);
+            width: 100%;
+            max-width: 460px;
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+        .tabs-auth {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 1.5rem;
+            gap: 0.2rem;
+        }
+        .tab-btn {
+            flex: 1;
+            text-align: center;
+            padding: 0.6rem 0.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-size: 0.9rem;
+        }
+        .tab-btn.active { border-color: var(--accent); color: var(--accent); }
 
-    .container {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-    }
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: linear-gradient(135deg, #0b1121, #1a3a6b, #1e3a8a);
+            border-radius: var(--radius-xl);
+            color: #fff;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 900; }
+        .hero h1 span { color: var(--gold); }
+        .hero p { opacity: 0.9; max-width: 650px; margin: 0.5rem auto 1.5rem; }
 
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-    }
+        /* Global */
+        .btn {
+            padding: 0.5rem 1.2rem;
+            border: none;
+            border-radius: 2.5rem;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: #2563eb; transform: scale(1.02); }
+        .btn-gold { background: var(--gold); color: #0b1121; }
+        .btn-gold:hover { background: #f59e0b; transform: scale(1.02); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #16a34a; transform: scale(1.02); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: #dc2626; transform: scale(1.02); }
+        .btn-sm { padding: 0.3rem 0.8rem; font-size: 0.7rem; }
+        .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: var(--border); }
 
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: #1abc9c;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--card);
+            padding: 1rem 0.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .stat-card i { font-size: 1.6rem; color: var(--accent); margin-bottom: 0.2rem; }
+        .stat-card h3 { font-size: 1.4rem; font-weight: 900; }
 
-    button:hover {
-      background-color: #16a085;
-    }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+            transition: all var(--transition);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        .card .favorite-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: all var(--transition);
+        }
+        .card .favorite-btn.active { color: var(--gold); }
+        .card .favorite-btn:hover { transform: scale(1.2); }
+        
+        .search-container {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 650px;
+            margin: 0 auto 1.5rem;
+            flex-wrap: wrap;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: var(--card);
+            color: var(--text);
+            transition: border 0.2s;
+        }
+        .form-control:focus { outline: none; border-color: var(--accent); }
 
-    .info {
-      margin-top: 25px;
-      font-size: 15px;
-      line-height: 1.8;
-    }
-  </style>
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 2rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .badge-primary { background: #dbeafe; color: #1e40af; }
+        .badge-gold { background: #fef3c7; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-success { background: #d1fae5; color: #065f46; }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        .video-box iframe { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius); border: none; }
+        .atlas-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            background: #cbd5e1;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .atlas-img:hover { transform: scale(1.02); }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--card);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            max-width: 700px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close {
+            position: sticky;
+            top: 0;
+            left: 100%;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            float: left;
+        }
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.6rem 1.4rem;
+            border-radius: 2rem;
+            z-index: 9999;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .footer {
+            background: #0b1121;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+        .lang-toggle {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 0.2rem 0.7rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .lang-toggle:hover { background: rgba(255,255,255,0.15); }
+        .theme-toggle {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.15); }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.5s ease;
+        }
+        .timer {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--danger);
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+        }
+        .certificate-btn {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        @media (max-width: 640px) {
+            .navbar .container { justify-content: center; }
+            .nav-links { justify-content: center; width: 100%; }
+            .nav-links a, .nav-links button { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+        }
+    </style>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="navbar-brand" onclick="navigate('home')"><i class="fas fa-heartbeat"></i> MediCore</a>
+            <div class="nav-links" id="navLinks"></div>
+        </div>
+    </nav>
 
-  <div class="container">
-    <h1>أدخل بريدك الإلكتروني</h1>
-    <input type="email" id="email" placeholder="example@email.com" required>
-    <button onclick="collectInfo()">إرسال</button>
+    <main id="mainContent" class="container"></main>
 
-    <div class="info" id="output"></div>
-  </div>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
 
-  <script>
-    function collectInfo() {
-      const email = document.getElementById('email').value;
-      const output = document.getElementById('output');
+    <div id="toastContainer"></div>
 
-      if (!email || !email.includes('@')) {
-        output.innerHTML = "يرجى إدخال بريد إلكتروني صحيح.";
-        return;
-      }
+    <footer class="footer">
+        <strong>MediCore Complete Medical Ecosystem</strong> &copy; 2026 | Open-source | All Features Included
+    </footer>
 
-      // طلب الموقع الجغرافي (بدون تنبيه في الواجهة)
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const lat = position.coords.latitude.toFixed(5);
-            const lon = position.coords.longitude.toFixed(5);
-            output.innerHTML = `
-              <strong>📧 بريدك:</strong> ${email}<br>
-              <strong>📍 موقعك الحالي:</strong><br>
-              خط العرض: ${lat}<br>
-              خط الطول: ${lon}
+    <script>
+        // ============================================================
+        // CONFIG & DATA GENERATORS
+        // ============================================================
+        const $ = (s) => document.querySelector(s);
+        const $$ = (s) => document.querySelectorAll(s);
+        const LS = (k, v) => {
+            if (v !== undefined) { localStorage.setItem(k, JSON.stringify(v)); return; }
+            return JSON.parse(localStorage.getItem(k));
+        };
+
+        const YT_IDS = [
+            { id: 'oHMmtqKgs50', title: 'Heart Anatomy & Valve Function' },
+            { id: '7XaftdE_h60', title: 'Microcirculation & Blood Flow' },
+            { id: 'HstZ7m5x7yU', title: 'Pharmacology: Drug Absorption' },
+            { id: '1O8c5CxTSqU', title: 'ECG Interpretation for Beginners' },
+            { id: '6xRmBBEZcBI', title: 'Suturing Techniques for Residents' },
+            { id: '0fIyJ9z1FUk', title: 'Respiratory Physiology & Gas Exchange' },
+            { id: 'XunP6m95q08', title: 'Cranial Nerves Examination' },
+            { id: 'qrr6bW_8Uzk', title: 'Biophysics of Neural Networks' }
+        ];
+        const CATS = ['Anatomy', 'Physiology', 'Pathology', 'Pharmacology', 'General Surgery', 'Internal Medicine', 'Pediatrics', 'Cardiology'];
+
+        const DATA = {
+            books: [], quizzes: [], videos: [], atlas: [],
+            generate() {
+                for (let i = 1; i <= 2000; i++) {
+                    let cat = CATS[i % CATS.length];
+                    this.books.push({
+                        id: i,
+                        title: `Comprehensive ${cat} Reference - Vol. ${((i % 5) + 1)}`,
+                        author: `Dr. A. Thompson & Team (Ed. ${i})`,
+                        desc: `Peer-reviewed medical textbook for students and clinicians.`,
+                        cat: cat,
+                        pages: 400 + (i % 800),
+                        fileSize: `${(15 + (i % 60))} MB`,
+                        downloads: 120 + (i * 3),
+                        rating: (4.2 + ((i % 9) / 10)).toFixed(1),
+                        link: 'https://openstax.org/details/books/anatomy-and-physiology'
+                    });
+                }
+                for (let i = 1; i <= 200; i++) {
+                    let cat = CATS[i % CATS.length];
+                    this.quizzes.push({
+                        id: i,
+                        title: `${cat} Quiz - Level ${((i % 3) + 1)}`,
+                        cat: cat,
+                        time: 10 + (i % 20),
+                        questionsCount: 5,
+                        questions: [
+                            { q: 'Which nerve innervates the diaphragm?', a: 'Phrenic', b: 'Vagus', c: 'Sciatic', d: 'Radial', right: 'a', exp: 'The phrenic nerve arises from C3-C5 and supplies the diaphragm.' },
+                            { q: 'Which drug is a non-selective beta-blocker?', a: 'Propranolol', b: 'Atenolol', c: 'Amlodipine', d: 'Lisinopril', right: 'a', exp: 'Propranolol blocks both beta-1 and beta-2 receptors.' },
+                            { q: 'Where are old RBCs primarily destroyed?', a: 'Spleen', b: 'Liver', c: 'Bone marrow', d: 'Kidney', right: 'a', exp: 'The spleen contains macrophages that remove aged RBCs.' },
+                            { q: 'Primary mediator of anaphylaxis?', a: 'Histamine', b: 'Insulin', c: 'Bilirubin', d: 'Urea', right: 'a', exp: 'Histamine is released by mast cells causing vasodilation.' },
+                            { q: 'Classic appendicitis pain starts at:', a: 'Periumbilical → RLQ', b: 'Left shoulder', c: 'Back', d: 'LUQ', right: 'a', exp: 'Visceral pain starts periumbilical, then localizes to McBurney\'s point.' }
+                        ]
+                    });
+                }
+                for (let i = 1; i <= 500; i++) {
+                    let baseVid = YT_IDS[i % YT_IDS.length];
+                    let cat = CATS[i % CATS.length];
+                    this.videos.push({
+                        id: i,
+                        title: `${baseVid.title} [Lecture ${i}]`,
+                        cat: cat,
+                        youtubeId: baseVid.id,
+                        views: 500 + (i * 12),
+                        duration: `${15 + (i % 30)} min`,
+                        lecturer: `MediCore Academic Staff`
+                    });
+                }
+                const IMG_POOL = [
+                    'https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=600&q=80'
+                ];
+                for (let i = 1; i <= 1000; i++) {
+                    let cat = CATS[i % CATS.length];
+                    this.atlas.push({
+                        id: i,
+                        title: `Histological Section #${i} - ${cat}`,
+                        cat: cat,
+                        imgUrl: IMG_POOL[i % IMG_POOL.length],
+                        photographer: `MediCore Digital Atlas`
+                    });
+                }
+            }
+        };
+        DATA.generate();
+
+        // ============================================================
+        // DATABASE STATE
+        // ============================================================
+        const DB = {
+            users: LS('db_users') || [
+                { email: 'admin@medicore.com', pass: 'Admin2026', name: 'Dr. Supervisor', role: 'supervisor' },
+                { email: 'student@medicore.com', pass: 'Student2026', name: 'Alex Rivera', role: 'student' }
+            ],
+            posts: LS('db_posts') || [
+                { id: 1, author: 'Dr. Supervisor', title: 'Welcome to MediCore Platform', body: 'Explore thousands of medical resources, quizzes, and interactive content.' }
+            ],
+            favorites: LS('favorites') || { books: [], videos: [] },
+            quizHistory: LS('quizHistory') || []
+        };
+
+        const STATE = {
+            user: LS('app_user') || null,
+            currentTab: 'home',
+            pages: { books: 1, quizzes: 1, videos: 1, atlas: 1 },
+            perPage: 12,
+            activeQuiz: null,
+            answers: {},
+            lang: 'en',
+            quizTimer: null,
+            timeRemaining: 0
+        };
+
+        function saveUsers() { LS('db_users', DB.users); }
+        function savePosts() { LS('db_posts', DB.posts); }
+        function saveFavorites() { LS('favorites', DB.favorites); }
+        function saveQuizHistory() { LS('quizHistory', DB.quizHistory); }
+
+        // ============================================================
+        // ROUTING & NAV
+        // ============================================================
+        function updateNav() {
+            let html = '';
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+
+            if (!STATE.user) {
+                html = `<a onclick="navigate('gate')" class="active"><i class="fas fa-lock"></i> ${t('Login / Sign Up', 'تسجيل الدخول / الاشتراك')}</a>`;
+            } else {
+                html = `
+                    <a onclick="navigate('home')" data-tab="home">🏠 ${t('Home', 'الرئيسية')}</a>
+                    <a onclick="navigate('library')" data-tab="library">📚 ${t('Library', 'المكتبة')} (${DATA.books.length})</a>
+                    <a onclick="navigate('quizzes')" data-tab="quizzes">📝 ${t('Quizzes', 'الاختبارات')} (${DATA.quizzes.length})</a>
+                    <a onclick="navigate('videos')" data-tab="videos">🎬 ${t('Videos', 'الفيديوهات')} (${DATA.videos.length})</a>
+                    <a onclick="navigate('atlas')" data-tab="atlas">🖼 ${t('Atlas', 'الأطلس')} (${DATA.atlas.length})</a>
+                    <a onclick="navigate('forum')" data-tab="forum">💬 ${t('Forum', 'المجتمع')}</a>
+                    <a onclick="navigate('dashboard')" data-tab="dashboard">📊 ${t('Dashboard', 'لوحة التحكم')}</a>
+                `;
+                if (STATE.user.role === 'supervisor') {
+                    html += `<a onclick="navigate('supervisor')" data-tab="supervisor" style="color:var(--gold);">⚙️ ${t('Admin', 'الإشراف')}</a>`;
+                }
+                html += `
+                    <button class="theme-toggle" onclick="toggleTheme()" title="${t('Toggle Theme', 'تبديل المظهر')}">🌓</button>
+                    <button class="lang-toggle" onclick="toggleLang()">${STATE.lang === 'en' ? 'عربي' : 'English'}</button>
+                    <a onclick="logout()" style="color:var(--danger);"><i class="fas fa-door-open"></i> ${t('Logout', 'خروج')}</a>
+                `;
+            }
+            $('#navLinks').innerHTML = html;
+            $$('.nav-links a').forEach(a => {
+                if (a.getAttribute('onclick') && a.getAttribute('onclick').includes(STATE.currentTab)) a.classList.add('active');
+                else a.classList.remove('active');
+            });
+        }
+
+        function navigate(tab) {
+            if (!STATE.user && tab !== 'gate') tab = 'gate';
+            STATE.currentTab = tab;
+            if (tab !== 'quizzes') {
+                STATE.activeQuiz = null;
+                if (STATE.quizTimer) { clearInterval(STATE.quizTimer); STATE.quizTimer = null; }
+            }
+            updateNav();
+            renderContent();
+            window.scrollTo(0, 0);
+        }
+
+        function toggleTheme() {
+            let t = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', t === 'dark' ? 'light' : 'dark');
+        }
+
+        function toggleLang() {
+            STATE.lang = STATE.lang === 'en' ? 'ar' : 'en';
+            document.body.classList.toggle('lang-ar', STATE.lang === 'ar');
+            renderContent();
+            updateNav();
+        }
+
+        function toast(msg, color = 'var(--primary)') {
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.style.background = color;
+            el.innerHTML = msg;
+            $('#toastContainer').appendChild(el);
+            setTimeout(() => el.remove(), 3000);
+        }
+
+        function openModal(html) { $('#modalBody').innerHTML = html; $('#modalOverlay').classList.add('active'); }
+        function closeModal() { $('#modalOverlay').classList.remove('active'); }
+
+        function logout() {
+            STATE.user = null;
+            LS('app_user', null);
+            toast('Logged out successfully');
+            navigate('gate');
+        }
+
+        // ============================================================
+        // RENDER ENGINE
+        // ============================================================
+        function renderContent() {
+            const main = $('#mainContent');
+            main.innerHTML = '';
+            if (STATE.currentTab === 'gate') { main.innerHTML = renderGateScreen(); return; }
+            switch (STATE.currentTab) {
+                case 'home': main.innerHTML = renderHomeScreen(); break;
+                case 'library': renderLibraryScreen(main); break;
+                case 'quizzes': renderQuizzesScreen(main); break;
+                case 'videos': renderVideosScreen(main); break;
+                case 'atlas': renderAtlasScreen(main); break;
+                case 'forum': renderForumScreen(main); break;
+                case 'dashboard': renderDashboardScreen(main); break;
+                case 'supervisor': renderSupervisorScreen(main); break;
+            }
+        }
+
+        // ----- AUTH GATE -----
+        let activeAuthMode = 'login';
+        function renderGateScreen() {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            return `
+            <div class="auth-gate">
+                <div class="auth-card">
+                    <h2 style="text-align:center; margin-bottom:0.8rem; font-weight:900; color:var(--accent);">${t('MediCore Medical Platform', 'منصة ميديكور الطبية')}</h2>
+                    <div class="tabs-auth">
+                        <div class="tab-btn active" id="btnTabLogin" onclick="switchAuthTab('login')">${t('Login', 'تسجيل دخول')}</div>
+                        <div class="tab-btn" id="btnTabReg" onclick="switchAuthTab('reg')">${t('Sign Up', 'إنشاء حساب')}</div>
+                        <div class="tab-btn" id="btnTabSuper" onclick="switchAuthTab('super')">${t('Supervisor', 'إشراف')}</div>
+                    </div>
+                    <form id="authForm" onsubmit="handleAuth(event)">
+                        <div id="authFields">
+                            <div style="margin-bottom:0.8rem;">
+                                <label style="font-size:0.8rem; font-weight:700;">${t('Email', 'البريد الإلكتروني')}:</label>
+                                <input type="email" id="authEmail" class="form-control" required placeholder="email@domain.com">
+                            </div>
+                            <div style="margin-bottom:0.8rem;">
+                                <label style="font-size:0.8rem; font-weight:700;">${t('Password', 'كلمة المرور')}:</label>
+                                <input type="password" id="authPass" class="form-control" required placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:1rem;" id="authSubmitBtn">${t('Access Platform', 'دخول المنصة')}</button>
+                    </form>
+                    <div style="margin-top:1.2rem; font-size:0.75rem; color:var(--text-secondary); line-height:1.5;">
+                        <strong>${t('Demo credentials:', 'بيانات تجريبية:')}</strong><br>
+                        ${t('Student', 'طالب')}: student@medicore.com / Student2026<br>
+                        ${t('Supervisor', 'مشرف')}: admin@medicore.com / Admin2026
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function switchAuthTab(mode) {
+            activeAuthMode = mode;
+            $$('.tab-btn').forEach(b => b.classList.remove('active'));
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            if (mode === 'login') {
+                $('#btnTabLogin').classList.add('active');
+                $('#authFields').innerHTML = `
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Email', 'البريد الإلكتروني')}:</label><input type="email" id="authEmail" class="form-control" required placeholder="email@domain.com"></div>
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Password', 'كلمة المرور')}:</label><input type="password" id="authPass" class="form-control" required placeholder="••••••••"></div>
+                `;
+                $('#authSubmitBtn').textContent = t('Access Platform', 'دخول المنصة');
+            } else if (mode === 'reg') {
+                $('#btnTabReg').classList.add('active');
+                $('#authFields').innerHTML = `
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Full Name', 'الاسم الكامل')}:</label><input type="text" id="authName" class="form-control" required placeholder="Dr. John Doe"></div>
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('University / Hospital', 'الجامعة / المستشفى')}:</label><input type="text" id="authUniv" class="form-control" required placeholder="Medical School"></div>
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Email', 'البريد الإلكتروني')}:</label><input type="email" id="authEmail" class="form-control" required placeholder="email@domain.com"></div>
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Password', 'كلمة المرور')}:</label><input type="password" id="authPass" class="form-control" required placeholder="min 8 chars"></div>
+                `;
+                $('#authSubmitBtn').textContent = t('Create Student Account', 'إنشاء حساب طالب');
+            } else if (mode === 'super') {
+                $('#btnTabSuper').classList.add('active');
+                $('#authFields').innerHTML = `
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Supervisor Name', 'اسم المشرف')}:</label><input type="text" id="authName" class="form-control" required placeholder="Dr. Sarah Lee"></div>
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Activation Key', 'كود التفعيل')}:</label><input type="text" id="authSuperKey" class="form-control" required placeholder="Enter supervisor key"><span style="font-size:0.65rem; color:var(--accent); display:block;">${t('Demo key: SUPER2026', 'للتجربة: SUPER2026')}</span></div>
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Professional Email', 'البريد المهني')}:</label><input type="email" id="authEmail" class="form-control" required placeholder="doctor@hospital.com"></div>
+                    <div style="margin-bottom:0.8rem;"><label style="font-size:0.8rem; font-weight:700;">${t('Password', 'كلمة المرور')}:</label><input type="password" id="authPass" class="form-control" required placeholder="••••••••"></div>
+                `;
+                $('#authSubmitBtn').textContent = t('Register as Supervisor', 'تسجيل كمشرف');
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            let email = $('#authEmail').value.trim();
+            let pass = $('#authPass').value;
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+
+            if (activeAuthMode === 'login') {
+                let u = DB.users.find(x => x.email.toLowerCase() === email.toLowerCase() && x.pass === pass);
+                if (u) {
+                    STATE.user = u; LS('app_user', u);
+                    toast(`${t('Welcome back', 'أهلاً بك مجدداً')} ${u.name}`, 'var(--success)');
+                    navigate('home');
+                } else { toast(t('Invalid email or password', 'خطأ في البريد أو كلمة المرور'), 'var(--danger)'); }
+            } else if (activeAuthMode === 'reg') {
+                let name = $('#authName').value.trim();
+                if (DB.users.find(x => x.email.toLowerCase() === email.toLowerCase())) { toast(t('Email already registered', 'البريد مسجل مسبقاً'), 'var(--danger)'); return; }
+                let newUser = { email, pass, name, role: 'student', univ: $('#authUniv').value };
+                DB.users.push(newUser); saveUsers();
+                STATE.user = newUser; LS('app_user', newUser);
+                toast(`${t('Account created', 'تم إنشاء الحساب')} ${name}`, 'var(--success)');
+                navigate('home');
+            } else if (activeAuthMode === 'super') {
+                let name = $('#authName').value.trim();
+                if ($('#authSuperKey').value !== 'SUPER2026') { toast(t('Invalid activation key', 'كود التفعيل غير صحيح'), 'var(--danger)'); return; }
+                if (DB.users.find(x => x.email.toLowerCase() === email.toLowerCase())) { toast(t('Email already registered', 'البريد مسجل مسبقاً'), 'var(--danger)'); return; }
+                let newUser = { email, pass, name, role: 'supervisor' };
+                DB.users.push(newUser); saveUsers();
+                STATE.user = newUser; LS('app_user', newUser);
+                toast(`${t('Supervisor registered', 'تم التسجيل كمشرف')}: ${name}`, 'var(--success)');
+                navigate('home');
+            }
+        }
+
+        // ----- HOME -----
+        function renderHomeScreen() {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            return `
+            <div class="hero">
+                <h1>${t('MediCore', 'ميديكور')} <span>${t('Medical Knowledge Hub', 'المرجع الطبي الشامل')}</span></h1>
+                <p>${t('Access 2,000+ books, 200+ quizzes, 500+ videos, and 1,000+ atlas images — all in one platform.', 'وصول إلى 2000+ كتاب، 200+ اختبار، 500+ فيديو، و 1000+ صورة أطلس — كل ذلك في منصة واحدة.')}</p>
+                <div><span class="badge badge-gold" style="font-size:0.9rem; padding:0.4rem 1.4rem;">${t('Welcome', 'مرحباً')} ${STATE.user.name}</span></div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><i class="fas fa-book-medical"></i><h3>2,000</h3><p>${t('Books', 'كتاب')}</p></div>
+                <div class="stat-card"><i class="fas fa-paste"></i><h3>200</h3><p>${t('Quizzes', 'اختبار')}</p></div>
+                <div class="stat-card"><i class="fas fa-video"></i><h3>500</h3><p>${t('Videos', 'فيديو')}</p></div>
+                <div class="stat-card"><i class="fas fa-images"></i><h3>1,000</h3><p>${t('Atlas', 'أطلس')}</p></div>
+                <div class="stat-card"><i class="fas fa-trophy"></i><h3>${DB.quizHistory.length}</h3><p>${t('Quizzes Taken', 'اختبارات مكتملة')}</p></div>
+            </div>
+            <h2 style="margin:2rem 0 1rem; font-weight:800;">${t('Quick Access', 'وصول سريع')}</h2>
+            <div class="cards-grid">
+                <div class="card" style="cursor:pointer;" onclick="navigate('library')">
+                    <h3 style="color:var(--accent); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-book"></i> ${t('Medical Library', 'المكتبة الطبية')}</h3>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Browse and download 2,000+ references.', 'تصفح وحمل 2000+ مرجع طبي.')}</p>
+                </div>
+                <div class="card" style="cursor:pointer;" onclick="navigate('quizzes')">
+                    <h3 style="color:var(--gold); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-feather-alt"></i> ${t('Quiz Bank', 'بنك الاختبارات')}</h3>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Test your knowledge with 200 interactive exams.', 'اختبر معرفتك بـ 200 اختبار تفاعلي.')}</p>
+                </div>
+                <div class="card" style="cursor:pointer;" onclick="navigate('videos')">
+                    <h3 style="color:var(--danger); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-play-circle"></i> ${t('Video Lectures', 'محاضرات فيديو')}</h3>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Watch 500+ medical lectures.', 'شاهد 500+ محاضرة طبية.')}</p>
+                </div>
+                <div class="card" style="cursor:pointer;" onclick="navigate('dashboard')">
+                    <h3 style="color:var(--success); font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-chart-line"></i> ${t('My Progress', 'تقدمي')}</h3>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">${t('Track your learning journey and achievements.', 'تابع رحلتك التعليمية وإنجازاتك.')}</p>
+                </div>
+            </div>`;
+        }
+
+        // ----- LIBRARY -----
+        let libSearchQuery = "", libSelectedCat = "", libFilterRating = "";
+        function renderLibraryScreen(target) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let filtered = DATA.books.filter(b => {
+                let mQ = b.title.toLowerCase().includes(libSearchQuery.toLowerCase()) || b.author.toLowerCase().includes(libSearchQuery.toLowerCase());
+                let mC = libSelectedCat === "" ? true : b.cat === libSelectedCat;
+                let mR = libFilterRating === "" ? true : parseFloat(b.rating) >= parseFloat(libFilterRating);
+                return mQ && mC && mR;
+            });
+            let totalPages = Math.ceil(filtered.length / STATE.perPage) || 1;
+            if (STATE.pages.books > totalPages) STATE.pages.books = totalPages;
+            let start = (STATE.pages.books - 1) * STATE.perPage;
+            let paginated = filtered.slice(start, start + STATE.perPage);
+
+            let html = `
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-book"></i> ${t('Medical Library', 'المكتبة الطبية')} (${DATA.books.length} ${t('books', 'كتاب')})</h2>
+                <div class="search-container">
+                    <input type="text" class="form-control" placeholder="${t('Search books or authors...', 'ابحث في الكتب أو المؤلفين...')}" value="${libSearchQuery}" oninput="libSearchQuery=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
+                    <select class="form-control" style="width:180px;" onchange="libSelectedCat=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
+                        <option value="">${t('All Categories', 'كل الأقسام')}</option>
+                        ${CATS.map(c => `<option value="${c}" ${libSelectedCat===c?'selected':''}>${c}</option>`).join('')}
+                    </select>
+                    <select class="form-control" style="width:130px;" onchange="libFilterRating=this.value; STATE.pages.books=1; renderLibraryScreen($('#mainContent'))">
+                        <option value="">${t('Rating', 'التقييم')}</option>
+                        <option value="4.5" ${libFilterRating==='4.5'?'selected':''}>⭐ 4.5+</option>
+                        <option value="4.0" ${libFilterRating==='4.0'?'selected':''}>⭐ 4.0+</option>
+                        <option value="3.5" ${libFilterRating==='3.5'?'selected':''}>⭐ 3.5+</option>
+                    </select>
+                </div>
+                <div class="cards-grid">
+                    ${paginated.map(b => `
+                        <div class="card">
+                            <button class="favorite-btn ${DB.favorites.books.includes(b.id)?'active':''}" onclick="toggleFavorite('books', ${b.id})"><i class="fas fa-star"></i></button>
+                            <span class="badge badge-primary" style="position:absolute; top:0.5rem; left:0.5rem;">${b.cat}</span>
+                            <h4 style="font-weight:800; margin-top:1rem; min-height:44px; font-size:0.95rem; cursor:pointer;" onclick="showBookSummary(${b.id})">${b.title}</h4>
+                            <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.5rem;">✍️ ${b.author}</p>
+                            <div style="font-size:0.72rem; margin-bottom:0.8rem; background:rgba(0,0,0,0.03); padding:0.4rem; border-radius:4px;">
+                                📄 ${t('Size', 'الحجم')}: ${b.fileSize} | 📦 ${t('Pages', 'الصفحات')}: ${b.pages} | ⭐ ${b.rating}
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:0.7rem; color:var(--text-muted);"><i class="fas fa-download"></i> ${b.downloads}</span>
+                                <a href="${b.link}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-external-link-alt"></i> ${t('Open Source', 'فتح المصدر')}</a>
+                            </div>
+                        </div>`).join('')}
+                </div>`;
+            html += renderPaginationControls('books', totalPages);
+            target.innerHTML = html;
+        }
+
+        function showBookSummary(id) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let book = DATA.books.find(b => b.id === id);
+            openModal(`
+                <h3 style="font-weight:900; color:var(--accent);">${book.title}</h3>
+                <p><strong>${t('Author', 'المؤلف')}:</strong> ${book.author}</p>
+                <p><strong>${t('Category', 'التصنيف')}:</strong> ${book.cat}</p>
+                <p><strong>${t('Description', 'الوصف')}:</strong> ${book.desc}</p>
+                <p><strong>${t('Pages', 'الصفحات')}:</strong> ${book.pages} | <strong>${t('Rating', 'التقييم')}:</strong> ⭐ ${book.rating}</p>
+                <div style="margin-top:1rem;">
+                    <a href="${book.link}" target="_blank" class="btn btn-success"><i class="fas fa-external-link-alt"></i> ${t('Read Online', 'قراءة مباشرة')}</a>
+                </div>
+            `);
+        }
+
+        // ----- QUIZZES -----
+        let quizSelectedCat = "";
+        function renderQuizzesScreen(target) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            if (STATE.activeQuiz) { target.innerHTML = renderActiveQuiz(); return; }
+
+            let filtered = DATA.quizzes.filter(q => quizSelectedCat === "" ? true : q.cat === quizSelectedCat);
+            let totalPages = Math.ceil(filtered.length / STATE.perPage) || 1;
+            if (STATE.pages.quizzes > totalPages) STATE.pages.quizzes = totalPages;
+            let start = (STATE.pages.quizzes - 1) * STATE.perPage;
+            let paginated = filtered.slice(start, start + STATE.perPage);
+
+            let html = `
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-feather-alt"></i> ${t('Quiz Bank', 'بنك الاختبارات')} (${DATA.quizzes.length} ${t('quizzes available', 'اختبار متاح')})</h2>
+                <div class="search-container">
+                    <select class="form-control" onchange="quizSelectedCat=this.value; STATE.pages.quizzes=1; renderQuizzesScreen($('#mainContent'))">
+                        <option value="">${t('All Specialties', 'كل التخصصات')}</option>
+                        ${CATS.map(c => `<option value="${c}" ${quizSelectedCat===c?'selected':''}>${c}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="cards-grid">
+                    ${paginated.map(q => `
+                        <div class="card">
+                            <span class="badge badge-gold" style="position:absolute; top:0.5rem; left:0.5rem;">${q.cat}</span>
+                            <h4 style="font-weight:800; margin-top:1rem; margin-bottom:0.5rem;">${q.title}</h4>
+                            <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">⏱ ${t('Time', 'الوقت')}: ${q.time} min | ❓ ${t('Questions', 'الأسئلة')}: ${q.questionsCount}</p>
+                            <button onclick="startQuiz(${q.id})" class="btn btn-primary btn-sm" style="width:100%; justify-content:center;"><i class="fas fa-play"></i> ${t('Start Quiz', 'بدء الاختبار')}</button>
+                        </div>`).join('')}
+                </div>`;
+            html += renderPaginationControls('quizzes', totalPages);
+            target.innerHTML = html;
+        }
+
+        function startQuiz(id) {
+            STATE.activeQuiz = DATA.quizzes.find(q => q.id === id);
+            STATE.answers = {};
+            STATE.timeRemaining = STATE.activeQuiz.time * 60; // in seconds
+            renderQuizzesScreen($('#mainContent'));
+            
+            // Start timer
+            if (STATE.quizTimer) clearInterval(STATE.quizTimer);
+            STATE.quizTimer = setInterval(() => {
+                STATE.timeRemaining--;
+                if (STATE.timeRemaining <= 0) {
+                    clearInterval(STATE.quizTimer);
+                    toast('Time is up! Submitting automatically.', 'var(--danger)');
+                    submitQuiz();
+                }
+                // Update timer display if visible
+                const timerEl = document.getElementById('quizTimer');
+                if (timerEl) {
+                    let mins = Math.floor(STATE.timeRemaining / 60);
+                    let secs = STATE.timeRemaining % 60;
+                    timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                    if (STATE.timeRemaining < 60) timerEl.style.color = 'var(--danger)';
+                }
+            }, 1000);
+        }
+
+        function renderActiveQuiz() {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let q = STATE.activeQuiz;
+            let mins = Math.floor(STATE.timeRemaining / 60);
+            let secs = STATE.timeRemaining % 60;
+            let progress = ((q.questions.length - Object.keys(STATE.answers).length) / q.questions.length) * 100;
+            
+            return `
+                <div class="card" style="max-width:800px; margin:0 auto;">
+                    <h2 style="font-weight:900; color:var(--accent); margin-bottom:0.5rem;">${q.title}</h2>
+                    <div class="timer" id="quizTimer">${mins}:${secs.toString().padStart(2, '0')}</div>
+                    <div class="progress-bar">
+                        <div class="fill" style="width:${100-progress}%;"></div>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">
+                        ${t('Questions answered', 'الأسئلة المجاب عنها')}: ${Object.keys(STATE.answers).length}/${q.questions.length}
+                    </p>
+                    ${q.questions.map((quest, idx) => `
+                        <div style="margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1rem;">
+                            <p style="font-weight:700; margin-bottom:0.5rem;">${t('Q', 'س')} ${idx+1}: ${quest.q}</p>
+                            <div style="display:grid; grid-template-columns:1fr; gap:0.5rem;">
+                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='a'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'a')">
+                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='a'?'checked':''}> ${quest.a}
+                                </label>
+                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='b'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'b')">
+                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='b'?'checked':''}> ${quest.b}
+                                </label>
+                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='c'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'c')">
+                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='c'?'checked':''}> ${quest.c}
+                                </label>
+                                <label style="cursor:pointer; padding:0.3rem; border-radius:4px; ${STATE.answers[idx]==='d'?'background:var(--accent);color:#fff;':''}" onclick="selectAnswer(${idx}, 'd')">
+                                    <input type="radio" name="q_${idx}" ${STATE.answers[idx]==='d'?'checked':''}> ${quest.d}
+                                </label>
+                            </div>
+                        </div>`).join('')}
+                    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                        <button onclick="submitQuiz()" class="btn btn-success">${t('Submit & Score', 'إنهاء ورصد الدرجة')}</button>
+                        <button onclick="STATE.activeQuiz=null; clearInterval(STATE.quizTimer); renderQuizzesScreen($('#mainContent'));" class="btn btn-danger">${t('Cancel', 'إلغاء')}</button>
+                    </div>
+                </div>`;
+        }
+
+        function selectAnswer(idx, answer) {
+            STATE.answers[idx] = answer;
+            // Re-render to update UI
+            renderQuizzesScreen($('#mainContent'));
+        }
+
+        function submitQuiz() {
+            if (STATE.quizTimer) { clearInterval(STATE.quizTimer); STATE.quizTimer = null; }
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let q = STATE.activeQuiz; let score = 0;
+            let reviewHtml = `<h3 style="font-weight:900; margin-bottom:1rem;">${t('Answer Review', 'مراجعة الإجابات')}</h3>`;
+            let details = [];
+            
+            q.questions.forEach((quest, idx) => {
+                let userAns = STATE.answers[idx]; let isRight = userAns === quest.right;
+                if (isRight) score++;
+                details.push({ question: quest.q, userAnswer: userAns, correct: quest.right, isRight, explanation: quest.exp });
+                reviewHtml += `
+                    <div style="margin-bottom:1rem; padding:0.8rem; background:${isRight?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)'}; border-radius:var(--radius); border:1px solid ${isRight?'var(--success)':'var(--danger)'}">
+                        <p><strong>${t('Q', 'س')} ${idx+1}: ${quest.q}</strong></p>
+                        <p style="font-size:0.85rem; margin:0.3rem 0;">${t('Your answer', 'إجابتك')}: ${userAns ? userAns.toUpperCase() : t('Not answered', 'لم تُجب')} | ${t('Correct', 'الصحيحة')}: ${quest.right.toUpperCase()}</p>
+                        <p style="font-size:0.75rem; color:var(--text-secondary); background:rgba(0,0,0,0.03); padding:0.3rem; border-radius:4px;">💡 <strong>${t('Explanation', 'التفسير')}:</strong> ${quest.exp}</p>
+                    </div>`;
+            });
+            
+            let percent = (score / q.questions.length) * 100;
+            
+            // Save to history
+            DB.quizHistory.push({
+                quizId: q.id,
+                title: q.title,
+                score: score,
+                total: q.questions.length,
+                percent: percent,
+                date: new Date().toISOString(),
+                details: details
+            });
+            saveQuizHistory();
+            
+            reviewHtml = `
+                <div style="text-align:center; margin-bottom:1.5rem;">
+                    <h2 style="font-size:2.5rem; font-weight:900; color:${percent>=60?'var(--success)':'var(--danger)'};">${percent}%</h2>
+                    <p>${t('You answered correctly', 'لقد أجبت بشكل صحيح على')} ${score}/${q.questions.length}</p>
+                    ${percent >= 70 ? `<div style="margin-top:0.5rem;"><span class="badge badge-success" style="font-size:1rem;">🏆 ${t('Excellent!', 'ممتاز!')}</span></div>` : ''}
+                </div>
+                ${reviewHtml}
+                <div class="certificate-btn">
+                    <button onclick="printCertificate('${q.title}', ${percent}, ${score}, ${q.questions.length})" class="btn btn-gold">
+                        <i class="fas fa-certificate"></i> ${t('Download Certificate', 'تحميل شهادة')}
+                    </button>
+                    <button onclick="retryQuiz(${q.id})" class="btn btn-primary" style="margin-right:0.5rem;">
+                        <i class="fas fa-redo"></i> ${t('Retry Quiz', 'إعادة المحاولة')}
+                    </button>
+                </div>
             `;
-          },
-          error => {
-            output.innerHTML = 📧 بريدك: ${email}<br> ⚠ لم يتم السماح بالحصول على الموقع.;
-          }
-        );
-      } else {
-        output.innerHTML = 📧 بريدك: ${email}<br> ⚠ جهازك لا يدعم الموقع الجغرافي.;
-      }
-    }
-  </script>
+            
+            openModal(reviewHtml);
+            STATE.activeQuiz = null;
+            renderQuizzesScreen($('#mainContent'));
+        }
 
+        function retryQuiz(id) {
+            closeModal();
+            startQuiz(id);
+        }
+
+        function printCertificate(title, percent, score, total) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let win = window.open('', '_blank');
+            win.document.write(`
+                <html><head><title>Certificate</title>
+                <style>
+                    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+                    .cert { border: 5px solid #fbbf24; padding: 40px; border-radius: 20px; max-width: 600px; margin: auto; }
+                    h1 { color: #0b1121; }
+                    .score { font-size: 3rem; font-weight: 900; color: #2d7aff; }
+                </style>
+                </head>
+                <body>
+                <div class="cert">
+                    <h1>🎓 ${t('Certificate of Achievement', 'شهادة إنجاز')}</h1>
+                    <p>${t('This certifies that', 'تشهد هذه الشهادة بأن')}</p>
+                    <h2>${STATE.user.name}</h2>
+                    <p>${t('has successfully completed', 'قد أتم بنجاح اختبار')}</p>
+                    <h3>"${title}"</h3>
+                    <p>${t('with a score of', 'بنسبة نجاح')}</p>
+                    <div class="score">${percent}%</div>
+                    <p>(${score}/${total} ${t('correct', 'إجابة صحيحة')})</p>
+                    <p style="margin-top:20px; color:#666;">${new Date().toLocaleDateString()}</p>
+                </div>
+                <script>window.print();<\/script>
+                </body></html>
+            `);
+            win.document.close();
+        }
+
+        // ----- VIDEOS -----
+        let vidSearchQuery = "";
+        function renderVideosScreen(target) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let filtered = DATA.videos.filter(v => v.title.toLowerCase().includes(vidSearchQuery.toLowerCase()) || v.cat.toLowerCase().includes(vidSearchQuery.toLowerCase()));
+            let totalPages = Math.ceil(filtered.length / STATE.perPage) || 1;
+            if (STATE.pages.videos > totalPages) STATE.pages.videos = totalPages;
+            let start = (STATE.pages.videos - 1) * STATE.perPage;
+            let paginated = filtered.slice(start, start + STATE.perPage);
+
+            let html = `
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-video"></i> ${t('Video Lectures', 'محاضرات فيديو')} (${DATA.videos.length} ${t('lectures', 'محاضرة')})</h2>
+                <div class="search-container">
+                    <input type="text" class="form-control" placeholder="${t('Search videos...', 'ابحث عن فيديو...')}" value="${vidSearchQuery}" oninput="vidSearchQuery=this.value; STATE.pages.videos=1; renderVideosScreen($('#mainContent'))">
+                </div>
+                <div class="cards-grid">
+                    ${paginated.map(v => `
+                        <div class="card">
+                            <button class="favorite-btn ${DB.favorites.videos.includes(v.id)?'active':''}" onclick="toggleFavorite('videos', ${v.id})"><i class="fas fa-star"></i></button>
+                            <div class="video-box" style="margin-bottom:0.5rem; position:relative;">
+                                <img src="https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg" style="width:100%; border-radius:var(--radius); cursor:pointer;" onclick="watchVideo('${v.youtubeId}')">
+                                <i class="fab fa-youtube" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:red; font-size:2.5rem; pointer-events:none; opacity:0.85;"></i>
+                            </div>
+                            <span class="badge badge-danger">${v.cat}</span>
+                            <h4 style="font-weight:800; font-size:0.85rem; margin:0.5rem 0; min-height:40px;">${v.title}</h4>
+                            <p style="font-size:0.72rem; color:var(--text-muted);">👨‍🏫 ${t('Lecturer', 'المحاضر')}: ${v.lecturer} | ⏱ ${v.duration}</p>
+                            <button onclick="watchVideo('${v.youtubeId}')" class="btn btn-danger btn-sm" style="width:100%; justify-content:center; margin-top:0.5rem;"><i class="fab fa-youtube"></i> ${t('Watch', 'تشغيل')}</button>
+                        </div>`).join('')}
+                </div>`;
+            html += renderPaginationControls('videos', totalPages);
+            target.innerHTML = html;
+        }
+
+        function watchVideo(id) {
+            openModal(`<div class="video-box"><iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allowfullscreen></iframe></div>`);
+        }
+
+        // ----- ATLAS -----
+        function renderAtlasScreen(target) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let totalPages = Math.ceil(DATA.atlas.length / STATE.perPage) || 1;
+            let start = (STATE.pages.atlas - 1) * STATE.perPage;
+            let paginated = DATA.atlas.slice(start, start + STATE.perPage);
+
+            let html = `
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-images"></i> ${t('Medical Atlas', 'الأطلس الطبي')} (${DATA.atlas.length} ${t('images', 'صورة')})</h2>
+                <div class="cards-grid">
+                    ${paginated.map(a => `
+                        <div class="card" style="text-align:center;">
+                            <img src="${a.imgUrl}" class="atlas-img" onclick="openModal('<img src=\\'${a.imgUrl}\\' style=\\'width:100%; max-height:80vh; object-fit:contain;\\'>')">
+                            <h4 style="font-weight:800; font-size:0.85rem; margin-top:0.5rem; text-align:right;">${a.title}</h4>
+                            <div style="text-align:right; margin-top:0.3rem;"><span class="badge badge-primary">${a.cat}</span></div>
+                        </div>`).join('')}
+                </div>`;
+            html += renderPaginationControls('atlas', totalPages);
+            target.innerHTML = html;
+        }
+
+        // ----- FORUM -----
+        function renderForumScreen(target) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let html = `
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-comments"></i> ${t('Medical Community Forum', 'منتدى المجتمع الطبي')}</h2>
+                <div class="card" style="margin-bottom:1.5rem;">
+                    <h4 style="font-weight:800; margin-bottom:0.5rem; color:var(--accent);">${t('Start a new discussion', 'ابدأ نقاشاً جديداً')}:</h4>
+                    <form onsubmit="addPost(event)">
+                        <input type="text" id="postTitle" class="form-control" placeholder="${t('Topic title', 'عنوان الموضوع')}" required style="margin-bottom:0.5rem;">
+                        <textarea id="postBody" class="form-control" placeholder="${t('Write your message...', 'اكتب رسالتك...')}" required style="margin-bottom:0.5rem; height:80px; font-family:inherit;"></textarea>
+                        <button type="submit" class="btn btn-primary">${t('Post to Community', 'نشر في المجتمع')}</button>
+                    </form>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                    ${DB.posts.map(p => `
+                        <div class="card">
+                            <h4 style="font-weight:800; color:var(--primary);"><i class="fas fa-bullhorn" style="color:var(--gold);"></i> ${p.title}</h4>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5rem;">${t('By', 'بواسطة')}: ${p.author}</p>
+                            <p style="font-size:0.9rem; color:var(--text-secondary);">${p.body}</p>
+                        </div>`).join('')}
+                </div>`;
+            target.innerHTML = html;
+        }
+
+        function addPost(e) {
+            e.preventDefault();
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let title = $('#postTitle').value.trim(); let body = $('#postBody').value.trim();
+            DB.posts.unshift({ id: Date.now(), author: STATE.user.name, title, body });
+            savePosts();
+            toast(t('Posted successfully!', 'تم النشر بنجاح!'), 'var(--success)');
+            renderForumScreen($('#mainContent'));
+        }
+
+        // ----- DASHBOARD -----
+        function renderDashboardScreen(target) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let history = DB.quizHistory;
+            let totalQuizzes = history.length;
+            let avgScore = totalQuizzes > 0 ? (history.reduce((sum, h) => sum + h.percent, 0) / totalQuizzes).toFixed(1) : 0;
+            let bestScore = totalQuizzes > 0 ? Math.max(...history.map(h => h.percent)) : 0;
+            
+            let html = `
+                <h2 style="font-weight:900; margin-bottom:1rem;"><i class="fas fa-chart-line"></i> ${t('My Learning Dashboard', 'لوحة التعلم الخاصة بي')}</h2>
+                <div class="stats-grid">
+                    <div class="stat-card"><i class="fas fa-paste"></i><h3>${totalQuizzes}</h3><p>${t('Quizzes Taken', 'اختبارات مكتملة')}</p></div>
+                    <div class="stat-card"><i class="fas fa-percentage"></i><h3>${avgScore}%</h3><p>${t('Average Score', 'متوسط الدرجات')}</p></div>
+                    <div class="stat-card"><i class="fas fa-trophy"></i><h3>${bestScore}%</h3><p>${t('Best Score', 'أفضل نتيجة')}</p></div>
+                    <div class="stat-card"><i class="fas fa-star"></i><h3>${DB.favorites.books.length + DB.favorites.videos.length}</h3><p>${t('Favorites', 'المفضلة')}</p></div>
+                </div>
+                <div class="card">
+                    <h4 style="font-weight:800; margin-bottom:1rem;">${t('Quiz History', 'سجل الاختبارات')}</h4>
+                    ${history.length === 0 ? `<p style="color:var(--text-muted);">${t('No quizzes taken yet. Start learning!', 'لم تخض أي اختبار بعد. ابدأ التعلم!')}</p>` : ''}
+                    ${history.slice().reverse().map(h => `
+                        <div style="padding:0.8rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                            <div>
+                                <strong>${h.title}</strong>
+                                <span style="font-size:0.7rem; color:var(--text-muted); display:block;">${new Date(h.date).toLocaleDateString()}</span>
+                            </div>
+                            <div>
+                                <span class="badge ${h.percent >= 70 ? 'badge-success' : h.percent >= 50 ? 'badge-gold' : 'badge-danger'}">
+                                    ${h.percent}% (${h.score}/${h.total})
+                                </span>
+                                <button onclick="showQuizDetails(${history.indexOf(h)})" class="btn btn-sm btn-outline" style="margin-right:0.5rem;">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>`).join('')}
+                </div>`;
+            target.innerHTML = html;
+        }
+
+        function showQuizDetails(index) {
+            let entry = DB.quizHistory[index];
+            let html = `<h3 style="font-weight:900; margin-bottom:1rem;">${entry.title}</h3>
+                <p><strong>Score:</strong> ${entry.percent}% (${entry.score}/${entry.total})</p>
+                <p><strong>Date:</strong> ${new Date(entry.date).toLocaleString()}</p>
+                <hr style="margin:1rem 0;">
+                ${entry.details.map((d, i) => `
+                    <div style="margin-bottom:0.8rem; padding:0.5rem; background:${d.isRight?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)'}; border-radius:4px;">
+                        <p><strong>Q${i+1}:</strong> ${d.question}</p>
+                        <p style="font-size:0.85rem;">Your answer: ${d.userAnswer ? d.userAnswer.toUpperCase() : 'Not answered'} | Correct: ${d.correct.toUpperCase()}</p>
+                        <p style="font-size:0.75rem; color:var(--text-secondary);">${d.explanation}</p>
+                    </div>`).join('')}`;
+            openModal(html);
+        }
+
+        // ----- SUPERVISOR -----
+        function renderSupervisorScreen(target) {
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            let html = `
+                <h2 style="font-weight:900; color:var(--gold); margin-bottom:1rem;"><i class="fas fa-user-shield"></i> ${t('Admin Dashboard', 'لوحة الإشراف')}</h2>
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>${DB.users.length}</h3><p>${t('Total Users', 'إجمالي المستخدمين')}</p></div>
+                    <div class="stat-card"><h3>${DB.posts.length}</h3><p>${t('Forum Posts', 'مواضيع المنتدى')}</p></div>
+                    <div class="stat-card"><h3>${DB.quizHistory.length}</h3><p>${t('Total Quizzes Taken', 'إجمالي الاختبارات المكتملة')}</p></div>
+                </div>
+                <div class="card">
+                    <h4 style="font-weight:800; margin-bottom:0.5rem;">${t('Registered Members', 'الأعضاء المسجلون')}:</h4>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse; font-size:0.85rem; text-align:right;">
+                            <thead>
+                                <tr style="border-bottom:2px solid var(--border);">
+                                    <th style="padding:0.5rem;">${t('Name', 'الاسم')}</th>
+                                    <th style="padding:0.5rem;">${t('Email', 'البريد')}</th>
+                                    <th style="padding:0.5rem;">${t('Role', 'الصلاحية')}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${DB.users.map(u => `
+                                    <tr style="border-bottom:1px solid var(--border);">
+                                        <td style="padding:0.5rem; font-weight:700;">${u.name}</td>
+                                        <td style="padding:0.5rem;">${u.email}</td>
+                                        <td style="padding:0.5rem;"><span class="badge ${u.role==='supervisor'?'badge-gold':'badge-primary'}">${u.role==='supervisor' ? t('Supervisor', 'مشرف') : t('Student', 'طالب')}</span></td>
+                                    </tr>`).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+            target.innerHTML = html;
+        }
+
+        // ----- FAVORITES -----
+        function toggleFavorite(type, id) {
+            let list = DB.favorites[type];
+            let idx = list.indexOf(id);
+            if (idx > -1) {
+                list.splice(idx, 1);
+                toast('Removed from favorites', 'var(--text-muted)');
+            } else {
+                list.push(id);
+                toast('Added to favorites!', 'var(--gold)');
+            }
+            saveFavorites();
+            renderContent(); // Refresh current view
+        }
+
+        // ============================================================
+        // PAGINATION
+        // ============================================================
+        function renderPaginationControls(type, totalPages) {
+            if (totalPages <= 1) return '';
+            let curr = STATE.pages[type];
+            const t = (en, ar) => STATE.lang === 'en' ? en : ar;
+            return `
+                <div class="pagination">
+                    <button class="btn btn-sm btn-primary" onclick="changePage('${type}', ${curr - 1})" ${curr===1?'disabled':''}>${t('Previous', 'السابق')}</button>
+                    <span style="font-size:0.8rem; font-weight:700; margin:0 10px;">${t('Page', 'صفحة')} ${curr} ${t('of', 'من')} ${totalPages}</span>
+                    <button class="btn btn-sm btn-primary" onclick="changePage('${type}', ${curr + 1})" ${curr===totalPages?'disabled':''}>${t('Next', 'التالي')}</button>
+                </div>`;
+        }
+
+        function changePage(type, p) {
+            STATE.pages[type] = p;
+            renderContent();
+            window.scrollTo(0, 0);
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        window.onload = () => {
+            document.body.classList.toggle('lang-ar', STATE.lang === 'ar');
+            navigate(STATE.user ? 'home' : 'gate');
+        };
+    </script>
 </body>
 </html>
